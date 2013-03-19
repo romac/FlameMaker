@@ -1,4 +1,6 @@
-/*  *	Author:      Moi  *	Date:        Aujourd'hui  */
+package ch.epfl.flamemaker.geometrie2d;
+
+
 
 public class Rectangle {
 	
@@ -8,12 +10,12 @@ public class Rectangle {
 
 	Rectangle (Point center,double width, double height){
 	
-		if (width > 0 && height > 0){
+		if (width <= 0 || height <= 0){
+			throw new IllegalArgumentException("Width and height cannot be null nor negative");
+		}
 		this.width = width;
 		this.height = height;
 		this.centre = center;
-		}
-		else{System.out.print("DonnŽes ŽronŽes");}
 	}
 	
 	public double left(){
@@ -75,7 +77,9 @@ public class Rectangle {
 		Rectangle expanded = new Rectangle (this.center(), newWidth, newHeight);
 		return expanded;
 	}
-	
+	public String toString(){
+		return "(" + centre.toString() + "," + this.width() + ", " + this.height() + ")";
+	}
 }
 
 

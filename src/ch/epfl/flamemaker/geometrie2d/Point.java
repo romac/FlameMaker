@@ -1,38 +1,31 @@
-/*  *	Author:      Moi  *	Date:        Aujourd'hui  */
 package ch.epfl.flamemaker.geometrie2d;
 
-public class Point {
-	private final double x;
-	private final double y;
 
-	Point (double a, double b){
-		 x = a;
-		 y = b;
+
+public class Point {
+	private double x;
+	private double y;
+	
+	public static Point ORIGIN = new Point(0,0);
+	
+	Point (double x, double y){
+		this.x = x;
+		this.y = y;
 	}
-	public double x(){
+	public double x (){
 		return x;
 	}
-	
 	public double y (){
 		return y;
 	}
-	public double r(){
-		double d = Math.sqrt(x*x + y*y);
-		return d;
+	public double r (){
+		return Math.sqrt(x*x+y*y);
 	}
-	public double theta(){
-		double a = x();
-		double b =  y();
-		
-		double theta = Math.atan2(a, b);
-		return theta;
-		
+	public double theta (){
+		return Math.atan2(x, y);
 	}
 	public String toString(){
-		String s = null;
-		double a = x();
-		double b = y();
-		 s = "(" + a + "," + b + ")";
-		 return s;
+		return "(" + x + " , " + y + ")";
 	}
+	
 }
