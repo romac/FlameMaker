@@ -14,7 +14,17 @@ public class AffineTransformation implements Transformation {
 	}
 	
 	public Point transformPoint(Point p) {
-		return new Point (this.a*p.x()+this.b*p.y()+this.c, this.d*p.x()+this.c*p.y()+this.f);
+		return new Point (this.a*p.x()+this.b*p.y()+this.c, this.d*p.x()+this.e*p.y()+this.f);
+	}
+	public double translationX(){
+		return c;
+	}
+	public double translationY(){
+		return f;
+	}
+	public AffineTransformation composeWith(AffineTransformation that){
+		return new AffineTransformation(this.a*that.a+this.b*that.d, this.a*that.b+this.b*that.e, this.a*that.c+this.b*that.f+this.c,
+		this.d*that.a+this.e*that.d, this.d*that.b+this.e*that.e, this.d*that.c+this.e*that.f+this.f); 
 	}
 	
 	static AffineTransformation newTranslation(double dx, double dy){
