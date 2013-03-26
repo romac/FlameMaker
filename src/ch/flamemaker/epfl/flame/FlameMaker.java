@@ -58,7 +58,8 @@ public class FlameMaker
         }
 	}
 	
-	private static void barnsley()
+	@SuppressWarnings( "unused" )
+    private static void barnsley()
     {
         List<FlameTransformation> transformations = Arrays.asList(
         	new FlameTransformation(

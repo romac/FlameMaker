@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Arrays;
 
-import ch.epfl.flamemaker.pbm.*;
 import ch.epfl.flamemaker.util.PBMWriter;
 
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
