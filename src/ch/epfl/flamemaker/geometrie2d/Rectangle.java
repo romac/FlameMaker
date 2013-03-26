@@ -3,7 +3,7 @@ package ch.epfl.flamemaker.geometrie2d;
 public class Rectangle
 {
 
-    private Point centre;
+    private Point center;
     private double width;
     private double height;
 
@@ -16,27 +16,27 @@ public class Rectangle
         
         this.width = width;
         this.height = height;
-        this.centre = center;
+        this.center = center;
     }
 
     public double left()
     {
-        return this.centre.x() - ( this.width / 2 );
+        return this.center.x() - ( this.width / 2 );
     }
 
     public double right()
     {
-        return this.centre.x() + ( this.width / 2 );
+        return this.center.x() + ( this.width / 2 );
     }
 
     public double bottom()
     {
-        return this.centre.y() - ( height / 2 );
+        return this.center.y() - ( height / 2 );
     }
 
     public double top()
     {
-        double y = centre.y();
+        double y = center.y();
         return y + ( height / 2 );
     }
 
@@ -52,7 +52,7 @@ public class Rectangle
 
     public Point center()
     {
-        return centre;
+        return center;
     }
 
     public boolean contains(Point p)
@@ -98,6 +98,6 @@ public class Rectangle
 
     public String toString()
     {
-        return "(" + centre.toString() + "," + this.width() + ", " + this.height() + ")";
+        return "( " + center + ", " + this.width() + ", " + this.height() + " )";
     }
 }
