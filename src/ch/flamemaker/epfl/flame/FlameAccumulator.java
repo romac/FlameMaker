@@ -17,17 +17,17 @@ public class FlameAccumulator
 		this.maxCount = Arrays.maxOf2DArray( hitCount );
 	}
 
-	int width()
+	public int width()
 	{
 		return this.hitCount.length;
 	}
 
-	int height()
+	public int height()
 	{
 		return this.hitCount[ 0 ].length;
 	}
 
-	double intensity( int x, int y )
+	public double intensity( int x, int y )
 	{
 		if( x < 0 || x > this.width() )
 		{
