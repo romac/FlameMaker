@@ -3,8 +3,8 @@ package ch.flamemaker.epfl.flame;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.flamemaker.geometrie2d.Point;
-import ch.epfl.flamemaker.geometrie2d.Transformation;
+import ch.epfl.flamemaker.geometry2d.Point;
+import ch.epfl.flamemaker.geometry2d.Transformation;
 
 public abstract class Variation implements Transformation
 {

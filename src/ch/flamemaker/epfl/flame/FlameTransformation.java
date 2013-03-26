@@ -1,8 +1,8 @@
 package ch.flamemaker.epfl.flame;
 
-import ch.epfl.flamemaker.geometrie2d.AffineTransformation;
-import ch.epfl.flamemaker.geometrie2d.Point;
-import ch.epfl.flamemaker.geometrie2d.Transformation;
+import ch.epfl.flamemaker.geometry2d.AffineTransformation;
+import ch.epfl.flamemaker.geometry2d.Point;
+import ch.epfl.flamemaker.geometry2d.Transformation;
 
 public class FlameTransformation implements Transformation
 {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ch.epfl.flamemaker.geometrie2d.AffineTransformation;
-import ch.epfl.flamemaker.geometrie2d.Point;
-import ch.epfl.flamemaker.geometrie2d.Rectangle;
+import ch.epfl.flamemaker.geometry2d.AffineTransformation;
+import ch.epfl.flamemaker.geometry2d.Point;
+import ch.epfl.flamemaker.geometry2d.Rectangle;
 
 public class IFS
 {

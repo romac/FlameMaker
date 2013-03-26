@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 import ch.epfl.flamemaker.pbm.*;
 
-import ch.epfl.flamemaker.geometrie2d.AffineTransformation;
-import ch.epfl.flamemaker.geometrie2d.Point;
-import ch.epfl.flamemaker.geometrie2d.Rectangle;
+import ch.epfl.flamemaker.geometry2d.AffineTransformation;
+import ch.epfl.flamemaker.geometry2d.Point;
+import ch.epfl.flamemaker.geometry2d.Rectangle;
 
 public class IFSMaker
 {

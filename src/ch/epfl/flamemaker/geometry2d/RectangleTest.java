@@ -1,4 +1,4 @@
-package ch.epfl.flamemaker.geometrie2d;
+package ch.epfl.flamemaker.geometry2d;
 
 import static org.junit.Assert.*;
 
