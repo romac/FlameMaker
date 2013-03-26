@@ -17,7 +17,7 @@ public class PBMWriter
 		this.stream = new PrintStream( this.fileName );
 	}
 	
-	public void printAccumulator( IFSAccumulator ifs )
+	public void printAccumulator( IFSAccumulator ifs, boolean invert )
 	{
 		this.stream.println( "P1" );
 		this.stream.println( ifs.width() + " " + ifs.height() );
@@ -26,7 +26,7 @@ public class PBMWriter
 		{
 			for( int j = 0; j < ifs.width(); j++ )
 			{
-			    this.stream.print( ifs.isHit( j, i ) ? "1 " : "0 " );
+			    this.stream.print( ifs.isHit( j, i ) ^ invert ? "1 " : "0 " );
 			}
 			
 			this.stream.println();

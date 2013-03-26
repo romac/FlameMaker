@@ -17,26 +17,26 @@ public class IFSMaker
 		IFSMaker.sierpinsky();
 		IFSMaker.barnsley();
 	}
-
+	
 	private static void barnsley()
 	{
 		ArrayList<AffineTransformation> transformations = new ArrayList<AffineTransformation>();
-
+		
 		AffineTransformation A1 = new AffineTransformation(
 		    0, 0,   0,
 		    0, 0.16, 0
 		);
-
+		
 		AffineTransformation A2 = new AffineTransformation(
 	        0.2, -0.26, 0,
 	        0.23, 0.22, 1.6
 	    );
-
+		
 		AffineTransformation A3 = new AffineTransformation(
 	        -0.15, 0.28, 0,
 	        0.26, 0.24, 0.44
 	    );
-
+		
 		AffineTransformation A4 = new AffineTransformation(
 			0.85,  0.04, 0,
 			-0.04, 0.85, 1.6
@@ -46,12 +46,12 @@ public class IFSMaker
 		transformations.add( A2 );
 		transformations.add( A3 );
 		transformations.add( A4 );
-
+		
 		IFS ifs = new IFS( transformations );
 		Rectangle frame = new Rectangle( new Point( 0, 4.5 ), 6, 10 );
-
+		
 		IFSAccumulator accumulator = ifs.compute( frame, 120, 200, 150 );
-
+		
 		PBMWriter writer;
         try {
             writer = new PBMWriter( "resources/barnsley.pbm" );
@@ -61,7 +61,7 @@ public class IFSMaker
             e.printStackTrace();
         }
 	}
-
+	
 	private static void sierpinsky()
 	{
 		ArrayList<AffineTransformation> transformations = new ArrayList<AffineTransformation>();
@@ -92,8 +92,8 @@ public class IFSMaker
 		
 		PBMWriter writer;
         try {
-            writer = new PBMWriter( "sierpinski.pbm" );
-            writer.printAccumulator( accumulator );
+            writer = new PBMWriter( "resources/sierpinski.pbm" );
+            writer.printAccumulator( accumulator, true );
         }
         catch( FileNotFoundException e ) {
             e.printStackTrace();
