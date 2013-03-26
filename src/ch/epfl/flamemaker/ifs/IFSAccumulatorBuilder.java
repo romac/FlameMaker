@@ -27,8 +27,8 @@ public class IFSAccumulatorBuilder
 		this.height = height;
 		this.hitMap = new boolean[ this.width ][ this.height ];
 		
-		this.transformation = AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() );
-		this.transformation = this.transformation.composeWith( AffineTransformation.newScaling( this.width, this.height ) );
+		this.transformation = AffineTransformation.newScaling( this.width / this.frame.width(), this.height / this.frame.height() );
+		this.transformation = this.transformation.composeWith( AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() ) );
 	}
 	
 	public void hit( Point p ) 
