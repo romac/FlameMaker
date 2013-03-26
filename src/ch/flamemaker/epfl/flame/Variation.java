@@ -52,7 +52,7 @@ public abstract class Variation implements Transformation
 			@Override
 			public Point transformPoint( Point p )
 			{
-				double r2= p.r() * p.r();
+				double r2 = p.r() * p.r();
 				
 				return new Point( p.x() / r2, p.y() / r2 );
 			}
@@ -66,7 +66,7 @@ public abstract class Variation implements Transformation
 				
 				return new Point(
 					p.x() * Math.sin( r2 ) - p.y() * Math.cos( r2 ),
-					p.x() * Math.cos( r2 ) - p.y() * Math.sin( r2 )
+					p.x() * Math.cos( r2 ) + p.y() * Math.sin( r2 )
 				);
 			}
 		},
