@@ -33,7 +33,8 @@ public class IFSAccumulatorBuilder
 	
 	public void hit( Point p ) 
 	{
-		if( !this.frame.contains( p ) ) {
+		if( !this.frame.contains( p ) )
+		{
 			return;
 		}
 		
