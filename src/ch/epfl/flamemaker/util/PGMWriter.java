@@ -29,7 +29,7 @@ public class PGMWriter
 		{
 			for( int j = 0; j < flame.width(); j++ )
 			{
-			    this.stream.print( flame.intensity( i, j ) * 100 );
+			    this.stream.print( Math.round( flame.intensity( j, i ) * 100 ) + " " );
 			}
 			
 			this.stream.println();
