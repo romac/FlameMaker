@@ -1,7 +1,6 @@
 package ch.epfl.flamemaker.ifs;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
