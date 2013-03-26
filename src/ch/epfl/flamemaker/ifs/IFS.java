@@ -11,32 +11,37 @@ import ch.epfl.flamemaker.geometrie2d.Rectangle;
 public class IFS
 {
 	private List<AffineTransformation> transformations;
-	
+
 	IFS( List<AffineTransformation> transformations )
 	{
-		this.transformations = new ArrayList<AffineTransformation>(transformations);
+		this.transformations = new ArrayList<AffineTransformation>( transformations );
 	}
-	
+
 	public IFSAccumulator compute( Rectangle frame, int width, int height, int density )
 	{
-		IFSAccumulatorBuilder builder = new IFSAccumulatorBuilder( frame, width, height );
-		
+		IFSAccumulatorBuilder builder = new IFSAccumulatorBuilder( frame,
+		        width, height );
+
 		Point p = new Point( 0, 0 );
 		Random random = new Random();
-		
+
 		int n = this.transformations.size();
-		for( int j = 0; j < 20; j++ ) {
+		
+		for( int j = 0; j < 20; j++ )
+		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
 		}
-		
+
 		int iterations = density * width * height;
-		for( int j = 0; j < iterations; j++ ) {
+		
+		for( int j = 0; j < iterations; j++ )
+		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
 			builder.hit( p );
 		}
-		
+
 		return builder.build();
 	}
 

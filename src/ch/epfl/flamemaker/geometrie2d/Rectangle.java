@@ -76,17 +76,20 @@ public class Rectangle
 
     public Rectangle expandToAspectRatio( double newAspectRatio )
     {
-        if( newAspectRatio <= 0 ) {
+        if( newAspectRatio <= 0 )
+        {
             throw new IllegalArgumentException( "aspectRatio cannot be null nor negative." );
         }
 
         double newHeight = this.height();
         double newWidth = this.width();
 
-        if( newAspectRatio > 1 ) {
+        if( newAspectRatio > 1 )
+        {
             newWidth = this.height * newAspectRatio;
         }
-        else if ( newAspectRatio < 1 ) {
+        else if ( newAspectRatio < 1 )
+        {
             newHeight = this.width() / newAspectRatio;
         }
         

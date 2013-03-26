@@ -22,14 +22,11 @@ public class PBMWriter
 		this.stream.println( "P1" );
 		this.stream.println( ifs.width() + " " + ifs.height() );
 		
-		for( int i = ifs.height() - 1; i >= 0; i-- ) {
-			for( int j = 0; j < ifs.width(); j++ ) {
-			    if( ifs.isHit( j, i ) ) {
-			        this.stream.print( "1 " );
-			    }
-			    else {
-			        this.stream.print( "0 " );
-			    }
+		for( int i = ifs.height() - 1; i >= 0; i-- )
+		{
+			for( int j = 0; j < ifs.width(); j++ )
+			{
+			    this.stream.print( ifs.isHit( j, i ) ? "1 " : "0 " );
 			}
 			
 			this.stream.println();
