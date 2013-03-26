@@ -33,6 +33,7 @@ public abstract class Variation implements Transformation
 	public final static List<Variation> ALL_VARIATIONS = Arrays.asList(
 		new Variation( 0, "Linear" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				return p;
@@ -40,6 +41,7 @@ public abstract class Variation implements Transformation
 		},
 		new Variation( 1, "Sinusoidal" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				return new Point( Math.sin( p.x() ), Math.sin( p.y() ) );
@@ -47,6 +49,7 @@ public abstract class Variation implements Transformation
 		},
 		new Variation( 2, "Spherical" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				double r2= p.r() * p.r();
@@ -56,6 +59,7 @@ public abstract class Variation implements Transformation
 		},
 		new Variation( 3, "Swirl" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				double r2 = p.r() * p.r();
@@ -68,6 +72,7 @@ public abstract class Variation implements Transformation
 		},
 		new Variation( 4, "Horseshoe" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				return new Point(
@@ -78,6 +83,7 @@ public abstract class Variation implements Transformation
 		},
 		new Variation( 5, "Bubble" )
 		{
+			@Override
 			public Point transformPoint( Point p )
 			{
 				double r2 = p.r() * p.r();
