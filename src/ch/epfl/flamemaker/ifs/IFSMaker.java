@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import ch.epfl.flamemaker.pbm.*;
+import ch.epfl.flamemaker.util.PBMWriter;
 
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
@@ -49,7 +50,7 @@ public class IFSMaker
         PBMWriter writer;
         try {
             writer = new PBMWriter( "resources/barnsley.pbm" );
-            writer.printAccumulator( accumulator, true );
+            writer.printAccumulator( accumulator );
         }
         catch( FileNotFoundException e ) {
             e.printStackTrace();
@@ -81,7 +82,7 @@ public class IFSMaker
         PBMWriter writer;
         try {
             writer = new PBMWriter( "resources/sierpinski.pbm" );
-            writer.printAccumulator( accumulator, true );
+            writer.printAccumulator( accumulator );
         }
         catch( FileNotFoundException e ) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package ch.epfl.flamemaker.pbm;
+package ch.epfl.flamemaker.util;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -7,6 +7,8 @@ import ch.epfl.flamemaker.ifs.IFSAccumulator;
 
 public class PBMWriter
 {
+	
+	private static boolean INVERT = true;
 	
 	private String fileName;
 	private PrintStream stream; 
@@ -17,7 +19,7 @@ public class PBMWriter
 		this.stream = new PrintStream( this.fileName );
 	}
 	
-	public void printAccumulator( IFSAccumulator ifs, boolean invert )
+	public void printAccumulator( IFSAccumulator ifs )
 	{
 		this.stream.println( "P1" );
 		this.stream.println( ifs.width() + " " + ifs.height() );
@@ -26,7 +28,7 @@ public class PBMWriter
 		{
 			for( int j = 0; j < ifs.width(); j++ )
 			{
-			    this.stream.print( ifs.isHit( j, i ) ^ invert ? "1 " : "0 " );
+			    this.stream.print( ifs.isHit( j, i ) ^ INVERT ? "1 " : "0 " );
 			}
 			
 			this.stream.println();
