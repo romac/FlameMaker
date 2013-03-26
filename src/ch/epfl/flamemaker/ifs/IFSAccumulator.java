@@ -4,6 +4,7 @@ import ch.epfl.flamemaker.util.Arrays;
 public class IFSAccumulator
 {
 	
+	// TODO: Rename to isHit?
 	private boolean[][] hitMap;
 	private int width;
 	private int height;
@@ -11,6 +12,8 @@ public class IFSAccumulator
 	IFSAccumulator( boolean[][] hitMap )
 	{
 		this.hitMap = Arrays.copyOf2DArray( hitMap );
+		
+		// TODO: Delete?
 		this.width = this.hitMap.length; 
 		this.height = this.hitMap[ 0 ].length;
 	}
