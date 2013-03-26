@@ -20,23 +20,23 @@ public class AffineTransformation implements Transformation
 			this.d * p.x() + this.e * p.y() + this.f
 		);
 	}
-
+	
 	public double translationX()
 	{
 		return c;
 	}
-
+	
 	public double translationY()
 	{
 		return f;
 	}
-
+	
 	public AffineTransformation composeWith( AffineTransformation that )
 	{
 		return new AffineTransformation(
             this.a * that.a + this.b * that.d, this.a * that.b + this.b * that.e, this.a * that.c + this.b * that.f+this.c,
 			this.d * that.a + this.e * that.d, this.d * that.b + this.e * that.e, this.d * that.c + this.e * that.f+this.f
-		);
+		); 
 	}
 	
 	public static AffineTransformation newTranslation( double dx, double dy )
@@ -54,7 +54,7 @@ public class AffineTransformation implements Transformation
 		    Math.sin( theta ),  Math.cos( theta ), 0
 		);
 	}
-
+	
 	public static AffineTransformation newScaling(double sx, double sy)
 	{
 		return new AffineTransformation(
@@ -62,7 +62,7 @@ public class AffineTransformation implements Transformation
 		    0, sy, 0
 		);
 	}
-
+	
 	public static AffineTransformation newShearX( double sx )
 	{
 		return new AffineTransformation(
@@ -70,7 +70,7 @@ public class AffineTransformation implements Transformation
 		    0, 1,  0
 		);
 	}
-
+	
 	public static AffineTransformation newShearY( double sy )
 	{
 		return new AffineTransformation(
@@ -78,7 +78,7 @@ public class AffineTransformation implements Transformation
 		    sy, 1, 0
 		);
 	}
-
+	
 	public static AffineTransformation IDENTITY()
 	{
 		return new AffineTransformation(

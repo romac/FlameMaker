@@ -13,7 +13,7 @@ public class Rectangle
         if( width <= 0 || height <= 0 ) {
             throw new IllegalArgumentException( "Width and height cannot be null nor negative");
         }
-
+        
         this.width = width;
         this.height = height;
         this.centre = center;
@@ -89,7 +89,7 @@ public class Rectangle
         else if ( newAspectRatio < 1 ) {
             newHeight = this.width() / newAspectRatio;
         }
-
+        
         return new Rectangle( this.center(), newWidth, newHeight );
     }
 
