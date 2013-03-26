@@ -29,14 +29,14 @@ public class FlameAccumulator
 
 	public double intensity( int x, int y )
 	{
-		if( x < 0 || x > this.width() )
+		if( x < 0 || x > this.width() - 1 )
 		{
-			throw new IndexOutOfBoundsException( "x is out of bounds." );
+			throw new IndexOutOfBoundsException( "x (" + x  + ") is out of bounds." );
 		}
 
-		if( y < 0 || y > this.height() )
+		if( y < 0 || y > this.height() - 1 )
 		{
-			throw new IndexOutOfBoundsException( "y is out of bounds." );
+			throw new IndexOutOfBoundsException( "y (" + y  + ") is out of bounds." );
 		}
 
 		return Math.log( this.hitCount[ x ][ y ] + 1 ) / Math.log( this.maxCount + 1 );
