@@ -34,6 +34,11 @@ public class Point
 		return Math.atan2( this.x, this.y );
 	}
 	
+	public Point scale( double factor )
+	{
+		return new Point( this.x * factor, this.y * factor );
+	}
+	
 	public String toString()
 	{
 		return "( " + this.x + ", " + this.y + " )";
