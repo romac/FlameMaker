@@ -43,7 +43,7 @@ public class Point
 	{
 		return new Point( this.x + other.x, this.y + other.y );
 	}
-
+	
 	public String toString()
 	{
 		return "( " + this.x + ", " + this.y + " )";

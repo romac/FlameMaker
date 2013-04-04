@@ -12,7 +12,6 @@ import ch.epfl.flamemaker.geometry2d.Rectangle;
 
 public class IFSMaker
 {
-
     
     public static void main(String[] args)
     {

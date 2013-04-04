@@ -31,13 +31,13 @@ public class FlameTransformation implements Transformation
 		for( int j = 0; j < Variation.ALL_VARIATIONS.size(); j++ )
 		{
 			double weight = this.variationWeight[ j ];
-
+			
 			// Don't apply this transformation if its weight is zero.
 			if( weight == 0.0 )
 			{
 				continue;
 			}
-
+			
 			Point g =  this.affineTransformation.transformPoint( p );
 			Point v = Variation.ALL_VARIATIONS.get( j ).transformPoint( g );
 			Point f = v.scale( weight );
