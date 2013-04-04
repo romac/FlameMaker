@@ -14,13 +14,15 @@ public class FlameMaker
 
 	public static void main( String[] args )
 	{
-		// FlameMaker.sharkFin();
 		// FlameMaker.barnsley();
+		FlameMaker.sharkfin();
 		FlameMaker.turbulence();
 	}
 	
-	private static void sharkFin()
+	private static void sharkfin()
 	{
+		System.out.print( "Generating Sharkfin fractal..." );
+		
 		List<FlameTransformation> transformations = Arrays.asList(
 			new FlameTransformation(
                 new AffineTransformation(
@@ -57,10 +59,14 @@ public class FlameMaker
         catch( FileNotFoundException e ) {
             e.printStackTrace();
         }
+        
+        System.out.println( "Done." );
 	}
 	
 	private static void turbulence()
 	{
+		System.out.print( "Generating Turbulence fractal..." );
+		
 		List<FlameTransformation> transformations = Arrays.asList(
 			new FlameTransformation(
                 new AffineTransformation(
@@ -97,11 +103,14 @@ public class FlameMaker
         catch( FileNotFoundException e ) {
             e.printStackTrace();
         }
+        System.out.println( "Done." );
 	}
 	
 	@SuppressWarnings( "unused" )
     private static void barnsley()
     {
+		System.out.print( "Generating Barnsely fractal..." );
+		
         List<FlameTransformation> transformations = Arrays.asList(
         	new FlameTransformation(
                 new AffineTransformation(
@@ -146,6 +155,8 @@ public class FlameMaker
         catch( FileNotFoundException e ) {
             e.printStackTrace();
         }
+        
+        System.out.println( "Done." );
     }
 	
 }
