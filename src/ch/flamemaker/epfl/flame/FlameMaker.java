@@ -14,8 +14,9 @@ public class FlameMaker
 
 	public static void main( String[] args )
 	{
-		FlameMaker.sharkFin();
+		// FlameMaker.sharkFin();
 		// FlameMaker.barnsley();
+		FlameMaker.turbulence();
 	}
 	
 	private static void sharkFin()
@@ -51,6 +52,46 @@ public class FlameMaker
         PGMWriter writer;
         try {
             writer = new PGMWriter ( "resources/sharkfin.pgm" );
+            writer.printAccumulator( accumulator );
+        }
+        catch( FileNotFoundException e ) {
+            e.printStackTrace();
+        }
+	}
+	
+	private static void turbulence()
+	{
+		List<FlameTransformation> transformations = Arrays.asList(
+			new FlameTransformation(
+                new AffineTransformation(
+                	0.7124807, 0.4113509, -0.3,
+                	0.4113513, 0.7124808, -0.7
+                ),
+                new double[] { 0.5, 0, 0, 0.4, 0, 0 }
+            ),
+            new FlameTransformation(
+                new AffineTransformation(
+                	0.3731079, -0.6462417, 0.4,
+                	0.6462414,  0.3731076, 0.3
+                ),
+                new double[] { 1, 0, 0.1, 0, 0, 0 }
+           ),
+           new FlameTransformation(
+                new AffineTransformation(
+                	0.0842641, -0.314478, -0.1,
+                	0.3144780,  0.0842641, 0.3
+                ),
+                new double[] { 1, 0, 0, 0, 0, 0 }
+            )
+        );
+        
+		Flame flame = new Flame( transformations );
+        Rectangle frame = new Rectangle( new Point( 0.1, 0.1 ), 3, 3 );
+        FlameAccumulator accumulator = flame.compute( frame, 500, 500, 50 );
+        
+        PGMWriter writer;
+        try {
+            writer = new PGMWriter ( "resources/turbulence.pgm" );
             writer.printAccumulator( accumulator );
         }
         catch( FileNotFoundException e ) {
