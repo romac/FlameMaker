@@ -39,6 +39,11 @@ public class Point
 		return new Point( this.x * factor, this.y * factor );
 	}
 	
+	public Point add( Point other )
+	{
+		return new Point( this.x + other.x, this.y + other.y );
+	}
+
 	public String toString()
 	{
 		return "( " + this.x + ", " + this.y + " )";

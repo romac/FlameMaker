@@ -34,7 +34,7 @@ public class FlameTransformation implements Transformation
 			Point v = Variation.ALL_VARIATIONS.get( j ).transformPoint( g );
 			Point f = v.scale( this.variationWeight[ j ] );
 			
-			r = new Point( r.x() + f.x(), r.y() + f.y() );
+			r = r.add( f );
 		}
 		
 		return r;
