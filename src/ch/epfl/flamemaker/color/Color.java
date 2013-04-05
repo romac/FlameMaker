@@ -1,5 +1,7 @@
 package ch.epfl.flamemaker.color;
 
+import java.util.Random;
+
 import ch.epfl.flamemaker.util.Interval;
 
 public class Color
@@ -10,6 +12,13 @@ public class Color
 	public static Color RED   = new Color( 1, 0, 0 );
 	public static Color GREEN = new Color( 0, 1, 0 );
 	public static Color BLUE  = new Color( 0, 0, 1 );
+	
+	public static Color randomColor()
+	{
+		Random random = new Random( 2013 );
+		
+		return new Color( random.nextDouble(), random.nextDouble(), random.nextDouble() );
+	}
 	
 	public static int sRGBEncode( double v, int max )
 	{
