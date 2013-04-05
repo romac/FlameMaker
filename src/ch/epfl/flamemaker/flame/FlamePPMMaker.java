@@ -9,14 +9,14 @@ import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.util.PGMWriter;
 
-public class FlameMaker
+public class FlamePPMMaker
 {
 
 	public static void main( String[] args )
 	{
 		// FlameMaker.barnsley();
-		FlameMaker.sharkfin();
-		FlameMaker.turbulence();
+		FlamePPMMaker.sharkfin();
+		FlamePPMMaker.turbulence();
 	}
 	
 	private static void sharkfin()
