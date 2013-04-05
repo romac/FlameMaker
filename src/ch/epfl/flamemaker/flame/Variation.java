@@ -1,4 +1,4 @@
-package ch.flamemaker.epfl.flame;
+package ch.epfl.flamemaker.flame;
 
 import java.util.Arrays;
 import java.util.List;

@@ -3,7 +3,7 @@ package ch.epfl.flamemaker.util;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import ch.flamemaker.epfl.flame.FlameAccumulator;
+import ch.epfl.flamemaker.flame.FlameAccumulator;
 
 public class PGMWriter
 {

@@ -1,4 +1,4 @@
-package ch.flamemaker.epfl.flame;
+package ch.epfl.flamemaker.flame;
 
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
@@ -66,8 +66,11 @@ public class FlameAccumulator
 			this.width = width;
 			this.height = height;
 			this.hitCount = new int[ width ][ height ];
-			this.transformation = AffineTransformation.newScaling( this.width / this.frame.width(), this.height / this.frame.height() );
-			this.transformation = this.transformation.composeWith( AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() ) );
+			
+			AffineTransformation scaling = AffineTransformation.newScaling( ( double )this.width / this.frame.width(), ( double )this.height / this.frame.height() ); 
+			AffineTransformation translation = AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() );
+			
+			this.transformation = scaling.composeWith( translation );
 		}
 
 		public void hit( Point p )
@@ -82,7 +85,7 @@ public class FlameAccumulator
 			int x = ( int )Math.floor( p.x() );
 			int y = ( int )Math.floor( p.y() );
 
-			this.hitCount[ x ][ y ]++;
+			this.hitCount[ x ][ y ] += 1;
 		}
 
 		public FlameAccumulator build()

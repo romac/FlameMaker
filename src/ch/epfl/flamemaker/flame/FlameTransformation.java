@@ -1,4 +1,4 @@
-package ch.flamemaker.epfl.flame;
+package ch.epfl.flamemaker.flame;
 
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
@@ -26,7 +26,7 @@ public class FlameTransformation implements Transformation
 	@Override
 	public Point transformPoint( Point p )
 	{
-		Point r = new Point( 0, 0 );
+		Point r = Point.ORIGIN;
 		
 		for( int j = 0; j < Variation.ALL_VARIATIONS.size(); j++ )
 		{
@@ -38,7 +38,7 @@ public class FlameTransformation implements Transformation
 				continue;
 			}
 			
-			Point g =  this.affineTransformation.transformPoint( p );
+			Point g = this.affineTransformation.transformPoint( p );
 			Point v = Variation.ALL_VARIATIONS.get( j ).transformPoint( g );
 			Point f = v.scale( weight );
 			

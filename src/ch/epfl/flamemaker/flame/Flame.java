@@ -1,4 +1,4 @@
-package ch.flamemaker.epfl.flame;
+package ch.epfl.flamemaker.flame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,28 @@ import ch.epfl.flamemaker.geometry2d.Rectangle;
 
 public class Flame
 {
-
-	private List<FlameTransformation> transformations;
+	
+	public static double[] colorIndexes( int n )
+	{
+		double[] indexes = new double[ n ];
+		
+		for( int i = 0; i < n; i++ )
+		{
+			if( n <= 1 ) {
+				indexes[ i ] = n;
+				continue;
+			}
+			
+			double denominator = Math.pow( 2, Math.ceil( Math.log( i ) / Math.log( 2 ) ) );
+			double numerator   = 1 + ( 2 * ( i - ( denominator / 2 ) - 1 ) ); 
+			
+			indexes[ i ] = numerator / denominator;
+		}
+		
+		return indexes;
+	}
+	
+	private final List<FlameTransformation> transformations;
 
 	Flame( List<FlameTransformation> transformations )
 	{
@@ -24,8 +44,8 @@ public class Flame
 	{
 		FlameAccumulator.Builder builder = new FlameAccumulator.Builder( frame, width, height );
 		
-		Point p = new Point( 0, 0 );
-		Random random = new Random();
+		Point p = Point.ORIGIN;
+		Random random = new Random( 2013 );
 
 		int n = this.transformations.size();
 		

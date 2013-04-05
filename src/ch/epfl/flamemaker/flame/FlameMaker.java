@@ -1,4 +1,4 @@
-package ch.flamemaker.epfl.flame;
+package ch.epfl.flamemaker.flame;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class FlameMaker
                     -0.3957339,  0, 		-1.6,
                      0, 		-0.3957337,  0.2
                 ),
-                new double[] { 0, 0, 0, 0.8, 1, 0 }
+                new double[] { 0, 0, 0, 0, 0.8, 1 }
            ),
            new FlameTransformation(
                 new AffineTransformation(
@@ -70,8 +70,8 @@ public class FlameMaker
 		List<FlameTransformation> transformations = Arrays.asList(
 			new FlameTransformation(
                 new AffineTransformation(
-                	0.7124807, 0.4113509, -0.3,
-                	0.4113513, 0.7124808, -0.7
+                	0.7124807, -0.4113509, -0.3,
+                	0.4113513,  0.7124808, -0.7
                 ),
                 new double[] { 0.5, 0, 0, 0.4, 0, 0 }
             ),

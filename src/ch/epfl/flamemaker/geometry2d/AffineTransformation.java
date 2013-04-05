@@ -13,6 +13,12 @@ public class AffineTransformation implements Transformation
 		this.d = d; this.e = e; this.f = f;
 	}
 	
+	public AffineTransformation clone()
+	{
+		return new AffineTransformation( this.a, this.b, this.c,
+										 this.d, this.e, this.f );
+	}
+	
 	@Override
 	public Point transformPoint( Point p )
 	{
