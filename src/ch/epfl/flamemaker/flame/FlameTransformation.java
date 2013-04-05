@@ -47,5 +47,48 @@ public class FlameTransformation implements Transformation
 		
 		return r;
 	}
+	
+	@Override
+	public FlameTransformation clone()
+	{
+		return new FlameTransformation( this.affineTransformation, this.variationWeight );
+	}
+	
+	public static class Builder
+	{
+		
+		private FlameTransformation transformation;
+		
+		public Builder( FlameTransformation transformation )
+		{
+			this.transformation = ( FlameTransformation )transformation.clone();
+		}
+		
+		public AffineTransformation affineTransformation()
+		{
+			return this.transformation.affineTransformation;
+		}
+
+		public void setAffineTransformation( AffineTransformation affineTransformation )
+		{
+			this.transformation.affineTransformation = affineTransformation.clone();
+		}
+
+		public double variationWeight( Variation variation )
+		{
+			return this.transformation.variationWeight[ variation.index() ];
+		}
+
+		public void setVariationWeight( Variation variation, double weight )
+		{
+			this.transformation.variationWeight[ variation.index() ] = weight;
+		}
+		
+		public FlameTransformation build()
+		{
+			return this.transformation;
+		}
+		
+	}
 
 }

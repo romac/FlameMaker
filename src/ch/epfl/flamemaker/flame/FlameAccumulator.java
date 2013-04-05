@@ -1,5 +1,7 @@
 package ch.epfl.flamemaker.flame;
 
+import ch.epfl.flamemaker.color.Color;
+import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
@@ -9,11 +11,13 @@ public class FlameAccumulator
 {
 
 	private int[][] hitCount;
+	private double[][] colorIndexSum;
 	private int maxCount;
 
-	private FlameAccumulator( int[][] hitCount )
+	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum )
 	{
 		this.hitCount = Arrays.copyOf2DArray( hitCount );
+		this.colorIndexSum = Arrays.copyOf2DArray( colorIndexSum );
 		this.maxCount = Arrays.maxOf2DArray( hitCount );
 	}
 
@@ -41,6 +45,17 @@ public class FlameAccumulator
 
 		return Math.log( this.hitCount[ x ][ y ] + 1 ) / Math.log( this.maxCount + 1 );
 	}
+	
+	public Color color( Palette palette, Color background, int x, int y )
+	{
+		if( this.hitCount[ x ][ y ] == 0.0 )
+		{
+			return background;
+		}
+		
+		return palette.colorForIndex( colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ] )
+					  .mixWith( background, this.intensity( x, y ) );
+	}
 
 	public static class Builder
 	{
@@ -48,6 +63,7 @@ public class FlameAccumulator
 		private int width;
 		private int height;
 		private int[][] hitCount;
+		private double[][] colorIndexSum;
 		private AffineTransformation transformation;
 
 		public Builder( Rectangle frame, int width, int height )
@@ -66,6 +82,7 @@ public class FlameAccumulator
 			this.width = width;
 			this.height = height;
 			this.hitCount = new int[ width ][ height ];
+			this.colorIndexSum = new double[ width ][ height ];
 			
 			AffineTransformation scaling = AffineTransformation.newScaling( ( double )this.width / this.frame.width(), ( double )this.height / this.frame.height() ); 
 			AffineTransformation translation = AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() );
@@ -73,7 +90,7 @@ public class FlameAccumulator
 			this.transformation = scaling.composeWith( translation );
 		}
 
-		public void hit( Point p )
+		public void hit( Point p, double c )
 		{
 			if( !this.frame.contains( p ) )
 			{
@@ -86,11 +103,12 @@ public class FlameAccumulator
 			int y = ( int )Math.floor( p.y() );
 
 			this.hitCount[ x ][ y ] += 1;
+			this.colorIndexSum[ x ][ y ] += c; 
 		}
 
 		public FlameAccumulator build()
 		{
-			return new FlameAccumulator( this.hitCount );
+			return new FlameAccumulator( this.hitCount, this.colorIndexSum );
 		}
 	}
 }
