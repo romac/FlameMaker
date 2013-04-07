@@ -55,11 +55,13 @@ public class InterpolatedPalette implements Palette
 		}
 		
 		// The proportion of this color is actually the difference
-		// between the index and its rounded self
+		// between the index and its rounded self, substracted to one.
 		// Example:   colorIndex = 1.25
 		// 			flooredIndex = 1.00
-		//					   p = 0.25			
-		double p = colorIndex - flooredIndex;
+		//					   p = 0.75
+		// Because if we're closed to Color #1, we should then add more of it to
+		// the mix than the other.
+		double p = 1 - ( colorIndex - flooredIndex ); 
 		
 		// We get the color at the floored index.
 		Color first = colors.get( ( int )flooredIndex );

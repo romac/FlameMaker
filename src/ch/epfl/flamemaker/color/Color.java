@@ -148,7 +148,7 @@ public class Color
 				   ? 12.92 * v
 				   : 1.055 * Math.pow( v, 1 / 2.4 ) - 0.055;
 		
-		return ( int )Math.round( c * max );
+		return ( int )Math.floor( c * max );
 	}
 	
 }
