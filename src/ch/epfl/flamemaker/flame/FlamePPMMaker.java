@@ -1,24 +1,37 @@
 package ch.epfl.flamemaker.flame;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.flamemaker.color.Color;
+import ch.epfl.flamemaker.color.InterpolatedPalette;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.util.PGMWriter;
+import ch.epfl.flamemaker.util.PPMWriter;
 
 public class FlamePPMMaker
 {
 
 	public static void main( String[] args )
 	{
-		// FlameMaker.barnsley();
+		// FlamePPMMaker.barnsley();
 		FlamePPMMaker.sharkfin();
 		FlamePPMMaker.turbulence();
+		// FlamePPMMaker.testBuilder();
 	}
 	
+	private static void testBuilder()
+    {
+		Flame flame = new Flame( new ArrayList() );
+	    Flame.Builder builder = new Flame.Builder( flame );
+	    
+	    // builder.
+    }
+
 	private static void sharkfin()
 	{
 		System.out.print( "Generating Sharkfin fractal..." );
@@ -50,17 +63,18 @@ public class FlamePPMMaker
 		Flame flame = new Flame( transformations );
         Rectangle frame = new Rectangle( new Point( -0.25, 0 ), 5, 4 );
         FlameAccumulator accumulator = flame.compute( frame, 500, 400, 50 );
+        InterpolatedPalette palette = InterpolatedPalette.RGB_PALETTE;
         
-        PGMWriter writer;
+        PPMWriter writer;
         try {
-            writer = new PGMWriter ( "resources/sharkfin.pgm" );
-            writer.printAccumulator( accumulator );
+            writer = new PPMWriter( "shark-fin.ppm" );
+            writer.printAccumulator( accumulator, palette, Color.BLACK );
         }
         catch( FileNotFoundException e ) {
             e.printStackTrace();
         }
         
-        System.out.println( "Done." );
+        System.out.println( " Done." );
 	}
 	
 	private static void turbulence()
@@ -94,16 +108,17 @@ public class FlamePPMMaker
 		Flame flame = new Flame( transformations );
         Rectangle frame = new Rectangle( new Point( 0.1, 0.1 ), 3, 3 );
         FlameAccumulator accumulator = flame.compute( frame, 500, 500, 50 );
+        InterpolatedPalette palette = InterpolatedPalette.RGB_PALETTE;
         
-        PGMWriter writer;
+        PPMWriter writer;
         try {
-            writer = new PGMWriter ( "resources/turbulence.pgm" );
-            writer.printAccumulator( accumulator );
+            writer = new PPMWriter( "turbulence.ppm" );
+            writer.printAccumulator( accumulator, palette, Color.BLACK );
         }
         catch( FileNotFoundException e ) {
             e.printStackTrace();
         }
-        System.out.println( "Done." );
+        System.out.println( " Done." );
 	}
 	
 	@SuppressWarnings( "unused" )

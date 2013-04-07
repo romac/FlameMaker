@@ -48,12 +48,22 @@ public class FlameAccumulator
 	
 	public Color color( Palette palette, Color background, int x, int y )
 	{
+		if( x < 0 || x > this.width() - 1 )
+		{
+			throw new IndexOutOfBoundsException( "x (" + x  + ") is out of bounds." );
+		}
+
+		if( y < 0 || y > this.height() - 1 )
+		{
+			throw new IndexOutOfBoundsException( "y (" + y  + ") is out of bounds." );
+		}
+		
 		if( this.hitCount[ x ][ y ] == 0.0 )
 		{
 			return background;
 		}
 		
-		return palette.colorForIndex( colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ] )
+		return palette.colorForIndex( this.colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ] )
 					  .mixWith( background, this.intensity( x, y ) );
 	}
 

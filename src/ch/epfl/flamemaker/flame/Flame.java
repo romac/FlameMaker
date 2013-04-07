@@ -24,18 +24,18 @@ public class Flame
 		FlameAccumulator.Builder builder = new FlameAccumulator.Builder( frame, width, height );
 
 		Point p = Point.ORIGIN;
+		double c = 0.0;
 		Random random = new Random( 2013 );
 
 		int n = this.transformations.size();
-		double c = 0.0;
 
 		double[] colorIndexes = Flame.colorIndexes( n );
-
+		
 		for( int j = 0; j < 20; j++ )
 		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
-			c = ( colorIndexes[ j ] + c ) / 2.0;
+			c = ( colorIndexes[ i ] + c ) / 2.0;
 		}
 
 		int iterations = density * width * height;
@@ -44,7 +44,7 @@ public class Flame
 		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
-			c = ( colorIndexes[ j ] + c ) / 2.0;
+			c = ( colorIndexes[ i ] + c ) / 2.0;
 
 			builder.hit( p, c );
 		}
@@ -63,9 +63,10 @@ public class Flame
 
 		for( int i = 0; i < n; i++ )
 		{
-			if( n <= 1 )
+			if( i <= 1 )
 			{
-				indexes[ i ] = n;
+				indexes[ i ] = i;
+				
 				continue;
 			}
 
@@ -74,19 +75,17 @@ public class Flame
 
 			indexes[ i ] = numerator / denominator;
 		}
-
+		
 		return indexes;
 	}
 
 	public static class Builder
 	{
 
-		private Flame flame;
 		private final List<FlameTransformation.Builder> builders;
 
 		public Builder( Flame flame )
 		{
-			this.flame = flame;
 			this.builders = new ArrayList<FlameTransformation.Builder>();
 
 			for( FlameTransformation transformation : flame.transformations )
