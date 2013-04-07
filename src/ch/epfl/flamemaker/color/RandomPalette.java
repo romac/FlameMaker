@@ -18,7 +18,7 @@ public class RandomPalette implements Palette
 		
 		for( int i = 0; i < n; i++ )
 		{
-			colors.add( Color.randomColor() );
+			colors.add( Color.random() );
 		}
 		
 		this.interpolatedPalette = new InterpolatedPalette( colors );

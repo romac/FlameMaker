@@ -1,9 +1,14 @@
 package ch.epfl.flamemaker.color;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class InterpolatedPalette implements Palette
 {
+	
+	public static InterpolatedPalette RGB_PALETTE = new InterpolatedPalette( Arrays.asList(
+		Color.RED, Color.GREEN, Color.BLUE
+	) );
 	
 	private List<Color> colors;
 	
@@ -20,8 +25,13 @@ public class InterpolatedPalette implements Palette
 	@Override
 	public Color colorForIndex( double index )
 	{
-		double colorIndex = index * colors.size();
-		double flooredIndex = Math.floor( colorIndex ); 
+		if( index < 0.0 || index > 1.0 )
+		{
+			throw new IllegalArgumentException( "index should be between 0 and 1." );
+		}
+		
+		double colorIndex = index * ( colors.size() - 1 );
+		double flooredIndex = Math.floor( colorIndex );
 		
 		if( colorIndex == flooredIndex )
 		{
@@ -35,5 +45,5 @@ public class InterpolatedPalette implements Palette
 		
 		return first.mixWith( second, p );
 	}
-
+	
 }
