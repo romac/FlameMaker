@@ -3,12 +3,12 @@ package ch.epfl.flamemaker.util;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
+import ch.epfl.flamemaker.color.Color;
+import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.FlameAccumulator;
 
 public class PPMWriter
 {
-	
-	// private static boolean INVERT = true;
 	
 	private String fileName;
 	private PrintStream stream; 
@@ -19,7 +19,7 @@ public class PPMWriter
 		this.stream = new PrintStream( this.fileName );
 	}
 	
-	public void printAccumulator( FlameAccumulator flame )
+	public void printAccumulator( FlameAccumulator flame, Palette palette, Color bg )
 	{
 		this.stream.println( "P3" );
 		this.stream.println( flame.width() + " " + flame.height() );
@@ -29,7 +29,13 @@ public class PPMWriter
 		{
 			for( int j = 0; j < flame.width(); j++ )
 			{
-			    this.stream.print( Math.round( flame.intensity( j, i ) * 100 ) + " " );
+				Color color = flame.color( palette, bg, j, i );
+				int r = Color.sRGBEncode( color.red(), 100 );
+				int g = Color.sRGBEncode( color.green(), 100 );
+				int b = Color.sRGBEncode( color.blue(), 100 );
+				
+				
+				this.stream.print( r + " " + g + " " + b + " " );
 			}
 			
 			this.stream.println();

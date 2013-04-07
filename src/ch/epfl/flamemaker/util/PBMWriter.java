@@ -8,7 +8,8 @@ import ch.epfl.flamemaker.ifs.IFSAccumulator;
 public class PBMWriter
 {
 	
-	private static boolean INVERT = true;
+	// Invert the colors, only useful when opening the images with Xee on OS X.
+	private static boolean INVERT = false;
 	
 	private String fileName;
 	private PrintStream stream; 

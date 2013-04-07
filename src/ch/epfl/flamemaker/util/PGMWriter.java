@@ -8,8 +8,6 @@ import ch.epfl.flamemaker.flame.FlameAccumulator;
 public class PGMWriter
 {
 	
-	// private static boolean INVERT = true;
-	
 	private String fileName;
 	private PrintStream stream; 
 
