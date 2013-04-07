@@ -7,7 +7,6 @@ import java.util.Random;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
-import ch.epfl.flamemaker.util.Interval;
 
 /**
  * Compute a Flame fractal, defined by a list of Flame transformations,
@@ -80,7 +79,7 @@ public class Flame
 	 */
 	public static double[] colorIndexes( int n )
 	{
-		if( !Interval.contains( n, 0, Integer.MAX_VALUE ) )
+		if( n <= 0 )
 		{
 			throw new IllegalArgumentException( "n must be greater or equal than 0." );
 		}
@@ -89,6 +88,7 @@ public class Flame
 
 		for( int i = 0; i < n; i++ )
 		{
+			// The color index for 0 or 1 is, respectively, 0 or 1.
 			if( i <= 1 )
 			{
 				indexes[ i ] = i;

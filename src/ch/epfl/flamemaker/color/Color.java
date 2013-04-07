@@ -2,8 +2,6 @@ package ch.epfl.flamemaker.color;
 
 import java.util.Random;
 
-import ch.epfl.flamemaker.util.Interval;
-
 /**
  * Represents a RGB color.
  */
@@ -30,7 +28,7 @@ public class Color
 	 */
 	Color( double r, double g, double b )
 	{
-		if( !Interval.contains( r, 0, 1 ) || !Interval.contains( g, 0, 1 ) || !Interval.contains( b, 0, 1 ) )
+		if( r < 0 || r > 1 || g < 0 || g > 1 || b < 0 || b > 1 )
 		{
 			throw new IllegalArgumentException(
 				"Color components must be between 0 and 1."
@@ -75,7 +73,7 @@ public class Color
 	 */
 	public Color mixWith( Color that, double proportion )
 	{
-		if( !Interval.contains( proportion, 0, 1 ) )
+		if( proportion < 0 || proportion > 1 )
 		{
 			throw new IllegalArgumentException( "proportion must be between 0 and 1." ); 
 		}
