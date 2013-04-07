@@ -23,52 +23,6 @@ public class FlamePPMMaker
 		FlamePPMMaker.turbulence();
 		// FlamePPMMaker.testBuilder();
 	}
-	
-	@SuppressWarnings( "unused" )
-	private static void testBuilder()
-    {
-		Flame flame = new Flame( new ArrayList<FlameTransformation>() );
-	    Flame.Builder builder = new Flame.Builder( flame );
-	    
-	    builder.addTransformation( new FlameTransformation(
-            new AffineTransformation(
-            	-0.4113504, -0.7124804, -0.4,
-            	 0.7124795, -0.4113508,  0.8
-            ),
-            new double[] { 1, 0.1, 0, 0, 0, 0 }
-        ) );
-	    
-	    builder.addTransformation( new FlameTransformation(
-            new AffineTransformation(
-                -0.3957339,  0, 		-1.6,
-                 0, 		-0.3957337,  0.2
-            ),
-            new double[] { 0, 0, 0, 0, 0.8, 1 }
-       ) );
-	    
-	    builder.addTransformation( new FlameTransformation(
-            new AffineTransformation(
-            	0.4810169, 0, 		  1,
-                0, 		   0.4810169, 0.9
-            ),
-            new double[] { 1, 0, 0, 0, 0, 0 }
-        ) );
-	    
-	    flame = builder.build();
-	    
-	    Rectangle frame = new Rectangle( new Point( -0.25, 0 ), 5, 4 );
-        FlameAccumulator accumulator = flame.compute( frame, 500, 400, 50 );
-        InterpolatedPalette palette = InterpolatedPalette.RGB_PALETTE;
-        
-        PPMWriter writer;
-        try {
-            writer = new PPMWriter( "resources/build-sharkfin.ppm" );
-            writer.printAccumulator( accumulator, palette, Color.BLACK );
-        }
-        catch( FileNotFoundException e ) {
-            e.printStackTrace();
-        }
-    }
 
 	private static void sharkfin()
 	{
@@ -158,6 +112,52 @@ public class FlamePPMMaker
         }
         System.out.println( " Done." );
 	}
+	
+	@SuppressWarnings( "unused" )
+	private static void testBuilder()
+    {
+		Flame flame = new Flame( new ArrayList<FlameTransformation>() );
+	    Flame.Builder builder = new Flame.Builder( flame );
+	    
+	    builder.addTransformation( new FlameTransformation(
+            new AffineTransformation(
+            	-0.4113504, -0.7124804, -0.4,
+            	 0.7124795, -0.4113508,  0.8
+            ),
+            new double[] { 1, 0.1, 0, 0, 0, 0 }
+        ) );
+	    
+	    builder.addTransformation( new FlameTransformation(
+            new AffineTransformation(
+                -0.3957339,  0, 		-1.6,
+                 0, 		-0.3957337,  0.2
+            ),
+            new double[] { 0, 0, 0, 0, 0.8, 1 }
+       ) );
+	    
+	    builder.addTransformation( new FlameTransformation(
+            new AffineTransformation(
+            	0.4810169, 0, 		  1,
+                0, 		   0.4810169, 0.9
+            ),
+            new double[] { 1, 0, 0, 0, 0, 0 }
+        ) );
+	    
+	    flame = builder.build();
+	    
+	    Rectangle frame = new Rectangle( new Point( -0.25, 0 ), 5, 4 );
+        FlameAccumulator accumulator = flame.compute( frame, 500, 400, 50 );
+        InterpolatedPalette palette = InterpolatedPalette.RGB_PALETTE;
+        
+        PPMWriter writer;
+        try {
+            writer = new PPMWriter( "resources/build-sharkfin.ppm" );
+            writer.printAccumulator( accumulator, palette, Color.BLACK );
+        }
+        catch( FileNotFoundException e ) {
+            e.printStackTrace();
+        }
+    }
 	
 	@SuppressWarnings( "unused" )
     private static void barnsley()

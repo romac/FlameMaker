@@ -1,5 +1,9 @@
 package ch.epfl.flamemaker.geometry2d;
 
+/**
+ * Represents a rectangle in a 2D coordinates system.
+ * A rectangle is defined by its center, and its size.
+ */
 public class Rectangle
 {
 
@@ -79,6 +83,9 @@ public class Rectangle
 
     }
 
+    /**
+     * @return This rectangle's aspect ratio.
+     */
     public double aspectRatio()
     {
         return this.width / this.height;

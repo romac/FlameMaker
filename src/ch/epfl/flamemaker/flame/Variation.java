@@ -12,30 +12,6 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
 public abstract class Variation implements Transformation
 {
 
-	private final String name;
-	private final int index;
-
-	private Variation( int index, String name )
-	{
-		this.name = name;
-		this.index = index;
-	}
-	
-	public String name()
-	{
-		return this.name;
-	}
-	
-	public int index()
-	{
-		return this.index;
-	}
-	
-	/**
-	 * @see Transformation#transformPoint( Point )
-	 */
-	abstract public Point transformPoint( Point p );
-	
 	/**
 	 * The most common variations, that'll be used by our program.
 	 */
@@ -104,5 +80,29 @@ public abstract class Variation implements Transformation
 			}
 		}
 	);
+	
+	private final String name;
+	private final int index;
+
+	private Variation( int index, String name )
+	{
+		this.name = name;
+		this.index = index;
+	}
+	
+	public String name()
+	{
+		return this.name;
+	}
+	
+	public int index()
+	{
+		return this.index;
+	}
+	
+	/**
+	 * @see Transformation#transformPoint( Point )
+	 */
+	abstract public Point transformPoint( Point p );
 
 }

@@ -14,18 +14,20 @@ import ch.epfl.flamemaker.util.Arrays2D;
  * Such an accumulator must be built progressively
  * using the {@link FlameAccumulator.Builder} class. 
  */
-public class FlameAccumulator
+public final class FlameAccumulator
 {
 
 	private int[][] hitCount;
 	private double[][] colorIndexSum;
-	private int maxCount;
+	private double intensityDenominator;
 
 	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum )
 	{
 		this.hitCount = Arrays2D.copyOf2DArray( hitCount );
 		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
-		this.maxCount = Arrays2D.maxOf2DArray( hitCount );
+		
+		int maxCount = Arrays2D.maxOf2DArray( hitCount );
+		this.intensityDenominator = Math.log( maxCount + 1 );
 	}
 	
 	/**
@@ -63,7 +65,7 @@ public class FlameAccumulator
 			throw new IndexOutOfBoundsException( "y (" + y  + ") is out of bounds." );
 		}
 
-		return Math.log( this.hitCount[ x ][ y ] + 1 ) / Math.log( this.maxCount + 1 );
+		return Math.log( this.hitCount[ x ][ y ] + 1 ) / this.intensityDenominator;
 	}
 	
 	/**

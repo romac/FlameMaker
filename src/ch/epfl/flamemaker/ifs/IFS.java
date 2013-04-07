@@ -23,7 +23,7 @@ public class IFS
 		        width, height );
 
 		Point p = new Point( 0, 0 );
-		Random random = new Random();
+		Random random = new Random( 2013 );
 
 		int n = this.transformations.size();
 		
