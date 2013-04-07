@@ -43,7 +43,7 @@ public class Color
 	}
 	
 	/**
-	 * @return The redcomponent of this color.
+	 * @return The red component of this color.
 	 */
 	public double red()
 	{

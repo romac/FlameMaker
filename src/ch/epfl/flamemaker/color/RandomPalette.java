@@ -2,11 +2,20 @@ package ch.epfl.flamemaker.color;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a color palette that interpolates between
+ * a given number of random colors. 
+ */
 public class RandomPalette implements Palette
 {
 
 	private InterpolatedPalette interpolatedPalette;
 	
+	/**
+	 * Create a new random palette that interpolates between n random colors.
+	 * 
+	 * @param n The number of colors to interpolate between.
+	 */
 	public RandomPalette( int n )
 	{
 		if( n < 2 )
@@ -24,6 +33,9 @@ public class RandomPalette implements Palette
 		this.interpolatedPalette = new InterpolatedPalette( colors );
 	}
 	
+	/**
+	 * @see InterpolatedPalette.colorForIndex()
+	 */
 	@Override
 	public Color colorForIndex( double index )
 	{
