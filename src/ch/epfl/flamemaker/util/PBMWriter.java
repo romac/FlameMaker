@@ -5,10 +5,16 @@ import java.io.PrintStream;
 
 import ch.epfl.flamemaker.ifs.IFSAccumulator;
 
+/**
+ * Dump an IFS accumulator into a PBM file.
+ */
 public class PBMWriter
 {
 	
-	// Invert the colors, only useful when opening the images with Xee on OS X.
+	/**
+	 * Set to true to invert black and white.
+	 * Only useful when opening the images with Xee on OS X.
+	 */
 	private static boolean INVERT = false;
 	
 	private String fileName;

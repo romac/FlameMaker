@@ -7,7 +7,7 @@ import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Transformation;
 
 /**
- * A variation is a commonly used, named, and indexed @see{Transformation}.
+ * A variation is a commonly used, named, and indexed {@link Transformation}.
  */
 public abstract class Variation implements Transformation
 {
@@ -32,7 +32,7 @@ public abstract class Variation implements Transformation
 	}
 	
 	/**
-	 * @see{Transformation.transformPoint()}
+	 * @see Transformation#transformPoint( Point )
 	 */
 	abstract public Point transformPoint( Point p );
 	

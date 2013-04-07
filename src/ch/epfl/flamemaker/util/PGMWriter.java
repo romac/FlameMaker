@@ -5,6 +5,9 @@ import java.io.PrintStream;
 
 import ch.epfl.flamemaker.flame.FlameAccumulator;
 
+/**
+ * Dump a Flame accumulator into a PGM file.
+ */
 public class PGMWriter
 {
 	

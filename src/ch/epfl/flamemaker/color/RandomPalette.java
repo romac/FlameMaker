@@ -34,7 +34,7 @@ public class RandomPalette implements Palette
 	}
 	
 	/**
-	 * @see InterpolatedPalette.colorForIndex()
+	 * @see InterpolatedPalette#colorForIndex()
 	 */
 	@Override
 	public Color colorForIndex( double index )

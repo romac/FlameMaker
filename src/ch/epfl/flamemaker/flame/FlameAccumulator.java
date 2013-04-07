@@ -10,6 +10,9 @@ import ch.epfl.flamemaker.util.Arrays2D;
 /**
  * An accumulator holdings a Flame fractal's points hit list
  * as well as their color indexes.
+ * 
+ * Such an accumulator must be built progressively
+ * using the {@link FlameAccumulator.Builder} class. 
  */
 public class FlameAccumulator
 {
@@ -24,17 +27,30 @@ public class FlameAccumulator
 		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
 		this.maxCount = Arrays2D.maxOf2DArray( hitCount );
 	}
-
+	
+	/**
+	 * @return The height of the accumulator
+	 */
 	public int width()
 	{
 		return this.hitCount.length;
 	}
 
+	/**
+	 * @return The width of the accumulator
+	 */
 	public int height()
 	{
 		return this.hitCount[ 0 ].length;
 	}
-
+	
+	/**
+	 * Compute the intensity at which the point at the given position has been hit.
+	 * 
+	 * @param x The x coordinate of the point.
+	 * @param y The y coordinate of the point.
+	 * @return The intensity at which the point has been hit.
+	 */
 	public double intensity( int x, int y )
 	{
 		if( x < 0 || x > this.width() - 1 )
@@ -50,6 +66,16 @@ public class FlameAccumulator
 		return Math.log( this.hitCount[ x ][ y ] + 1 ) / Math.log( this.maxCount + 1 );
 	}
 	
+	/**
+	 * Compute the color of the point at the given position,
+	 * using the given palette and background color.
+	 * 
+	 * @param palette The color palette to use
+	 * @param background The background color
+	 * @param x The x coordinate of the point.
+	 * @param y The y coordinate of the point.
+	 * @return The color of the point
+	 */
 	public Color color( Palette palette, Color background, int x, int y )
 	{
 		if( x < 0 || x > this.width() - 1 )
@@ -62,17 +88,22 @@ public class FlameAccumulator
 			throw new IndexOutOfBoundsException( "y (" + y  + ") is out of bounds." );
 		}
 		
+		// If the point hasn't been hit, we just return the background color,
+		// for efficiency and to avoid a division by zero in the next step.
 		if( this.hitCount[ x ][ y ] == 0.0 )
 		{
 			return background;
 		}
 		
-		return palette.colorForIndex( this.colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ] )
-					  .mixWith( background, this.intensity( x, y ) );
+		double colorIndex = this.colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ];
+		
+		// We get the color at the index, and mix it with the background color,
+		// proportionnaly to the point's intensity.
+		return palette.colorForIndex( colorIndex ).mixWith( background, this.intensity( x, y ) );
 	}
 	
 	/**
-	 * Build a Flame accumulator progressively, using the @see{hit()} method.
+	 * Build a Flame accumulator progressively, using the {@link #hit( Point, double )} method.
 	 */
 	public static class Builder
 	{
@@ -101,19 +132,32 @@ public class FlameAccumulator
 			this.hitCount = new int[ width ][ height ];
 			this.colorIndexSum = new double[ width ][ height ];
 			
+			// Since hit points are contained in a frame whose origin is is not necessarily at ( 0, 0 ),
+			// and which might now be as wide or height as the output image,
+			// we need to translate and scale the point from their coordinates in the plan
+			// to pixel coordinates in the bitmap.
+			// We do this using an affine transformation that we'll use in {@link #hit( Point, double )}.
 			AffineTransformation scaling = AffineTransformation.newScaling( ( double )this.width / this.frame.width(), ( double )this.height / this.frame.height() ); 
 			AffineTransformation translation = AffineTransformation.newTranslation( -this.frame.left(), -this.frame.bottom() );
 			
 			this.transformation = scaling.composeWith( translation );
 		}
-
+		
+		/**
+		 * Hit the point p, with the given color index.
+		 *
+		 * @param p The point to hit.
+		 * @param c The color index of that point.
+		 */
 		public void hit( Point p, double c )
 		{
 			if( !this.frame.contains( p ) )
 			{
 				return;
 			}
-
+			
+			// See the comment in {@link #Builder( Rectangle, int, int )} for a detailed
+			// explanation of why we need to transform that point.
 			p = this.transformation.transformPoint( p );
 
 			int x = ( int )Math.floor( p.x() );
@@ -122,7 +166,10 @@ public class FlameAccumulator
 			this.hitCount[ x ][ y ] += 1;
 			this.colorIndexSum[ x ][ y ] += c; 
 		}
-
+		
+		/**
+		 * Build the Flame accumulator.
+		 */
 		public FlameAccumulator build()
 		{
 			return new FlameAccumulator( this.hitCount, this.colorIndexSum );

@@ -7,6 +7,9 @@ import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.FlameAccumulator;
 
+/**
+ * Dump a Flame accumulator into a PPM file.
+ */
 public class PPMWriter
 {
 	

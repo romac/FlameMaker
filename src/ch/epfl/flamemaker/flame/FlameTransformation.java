@@ -6,7 +6,7 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
 
 /**
  * A flame transformation, which is actually a weighted application of
- * @see{Variation}, each composed with the given @see{AffineTransformation}.
+ * {@link Variation}, each composed with the given {@link ch.epfl.flamemaker.geometry2d.AffineTransformation}.
  */
 public class FlameTransformation implements Transformation
 {
@@ -27,6 +27,13 @@ public class FlameTransformation implements Transformation
 		this.variationWeight = variationWeight.clone();
 	}
 
+	/**
+	 * Transform the given point by applying every known {@link Variation}
+	 * to it, weighted by their weight, and composed with this transformation's
+	 * affine transformation.
+	 * 
+	 * @see Transformation#transformPoint( Point )
+	 */
 	@Override
 	public Point transformPoint( Point p )
 	{
