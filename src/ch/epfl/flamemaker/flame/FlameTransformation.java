@@ -11,8 +11,8 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
 public class FlameTransformation implements Transformation
 {
 
-	private final AffineTransformation affineTransformation;
-	private final double[] variationWeight;
+	private AffineTransformation affineTransformation;
+	private double[] variationWeight;
 
 	FlameTransformation( AffineTransformation affineTransformation, double[] variationWeight )
 	{
