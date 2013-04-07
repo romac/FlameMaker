@@ -9,16 +9,36 @@ import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.util.Interval;
 
+/**
+ * Compute a Flame fractal, defined by a list of Flame transformations,
+ * in the given frame.
+ */
 public class Flame
 {
 
 	private final List<FlameTransformation> transformations;
-
+	
+	/**
+	 * Create a new Flame with the given transformations.
+	 * 
+	 * @param transformations The Flame transformations to apply.
+	 */
 	Flame( List<FlameTransformation> transformations )
 	{
 		this.transformations = new ArrayList<FlameTransformation>( transformations );
 	}
 
+	/**
+	 * Compute a colored Flame fractal, in the given frame, with the given size, and of the given density.
+	 * 
+	 * @param frame The frame in which the fractal must be contained.
+	 * @param width The width of the fractal.
+	 * @param height The height of the fractal.
+	 * @param density The density of points.
+	 * 
+	 * @return An accumulator, holding the points hit list,
+	 * 		   as well as the points' color indexes.
+	 */
 	public FlameAccumulator compute( Rectangle frame, int width, int height, int density )
 	{
 		FlameAccumulator.Builder builder = new FlameAccumulator.Builder( frame, width, height );
@@ -51,7 +71,13 @@ public class Flame
 
 		return builder.build();
 	}
-
+	
+	/**
+	 * Compute the first n color indexes.
+	 * 
+	 * @param n The number of color indexes to compute.
+	 * @return An array of n color indexes.
+	 */
 	public static double[] colorIndexes( int n )
 	{
 		if( !Interval.contains( n, 0, Integer.MAX_VALUE ) )
@@ -78,7 +104,10 @@ public class Flame
 		
 		return indexes;
 	}
-
+	
+	/**
+	 * Build a Flame fractal progressively.
+	 */
 	public static class Builder
 	{
 

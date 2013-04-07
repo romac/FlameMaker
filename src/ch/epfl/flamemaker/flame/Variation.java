@@ -6,6 +6,9 @@ import java.util.List;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Transformation;
 
+/**
+ * A variation is a commonly used, named, and indexed @see{Transformation}.
+ */
 public abstract class Variation implements Transformation
 {
 
@@ -28,8 +31,14 @@ public abstract class Variation implements Transformation
 		return this.index;
 	}
 	
+	/**
+	 * @see{Transformation.transformPoint()}
+	 */
 	abstract public Point transformPoint( Point p );
 	
+	/**
+	 * The most common variations, that'll be used by our program.
+	 */
 	public final static List<Variation> ALL_VARIATIONS = Arrays.asList(
 		new Variation( 0, "Linear" )
 		{

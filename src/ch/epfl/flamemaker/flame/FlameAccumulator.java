@@ -5,8 +5,12 @@ import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
-import ch.epfl.flamemaker.util.Arrays;
+import ch.epfl.flamemaker.util.Arrays2D;
 
+/**
+ * An accumulator holdings a Flame fractal's points hit list
+ * as well as their color indexes.
+ */
 public class FlameAccumulator
 {
 
@@ -16,9 +20,9 @@ public class FlameAccumulator
 
 	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum )
 	{
-		this.hitCount = Arrays.copyOf2DArray( hitCount );
-		this.colorIndexSum = Arrays.copyOf2DArray( colorIndexSum );
-		this.maxCount = Arrays.maxOf2DArray( hitCount );
+		this.hitCount = Arrays2D.copyOf2DArray( hitCount );
+		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
+		this.maxCount = Arrays2D.maxOf2DArray( hitCount );
 	}
 
 	public int width()
@@ -66,7 +70,10 @@ public class FlameAccumulator
 		return palette.colorForIndex( this.colorIndexSum[ x ][ y ] / this.hitCount[ x ][ y ] )
 					  .mixWith( background, this.intensity( x, y ) );
 	}
-
+	
+	/**
+	 * Build a Flame accumulator progressively, using the @see{hit()} method.
+	 */
 	public static class Builder
 	{
 		private Rectangle frame;

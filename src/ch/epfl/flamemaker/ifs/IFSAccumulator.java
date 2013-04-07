@@ -1,5 +1,5 @@
 package ch.epfl.flamemaker.ifs;
-import ch.epfl.flamemaker.util.Arrays;
+import ch.epfl.flamemaker.util.Arrays2D;
 
 public class IFSAccumulator
 {
@@ -11,7 +11,7 @@ public class IFSAccumulator
 	
 	IFSAccumulator( boolean[][] hitMap )
 	{
-		this.hitMap = Arrays.copyOf2DArray( hitMap );
+		this.hitMap = Arrays2D.copyOf2DArray( hitMap );
 		
 		// TODO: Delete?
 		this.width = this.hitMap.length; 

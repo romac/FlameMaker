@@ -73,7 +73,14 @@ public class Rectangle
     {
         return this.width / this.height;
     }
-
+    
+    /**
+     * Expand this rectangle to a new one of the given aspect ratio, with a minimal size,
+     * but that still contains this rectangle.
+     * 
+     * @param newAspectRatio The aspect ratio of the new rectangle.
+     * @return A new rectangle.
+     */
     public Rectangle expandToAspectRatio( double newAspectRatio )
     {
         if( newAspectRatio <= 0 )

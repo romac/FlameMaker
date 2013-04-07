@@ -4,6 +4,10 @@ import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Transformation;
 
+/**
+ * A flame transformation, which is actually a weighted application of
+ * @see{Variation}, each composed with the given @see{AffineTransformation}.
+ */
 public class FlameTransformation implements Transformation
 {
 
@@ -54,6 +58,9 @@ public class FlameTransformation implements Transformation
 		return new FlameTransformation( this.affineTransformation, this.variationWeight );
 	}
 	
+	/**
+	 * Build a Flame transformation progressively.
+	 */
 	public static class Builder
 	{
 		
