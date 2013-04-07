@@ -3,7 +3,7 @@ package ch.epfl.flamemaker.geometry2d;
 /**
  * An affine transformation, defined by the first 6 coefficients
  * of its matrix:
- * 					|Êa  b  c |
+ * 					| a  b  c |
  * 					| d  e  f |
  * 					| 0  0  1 |
  *
