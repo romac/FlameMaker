@@ -55,6 +55,16 @@ public class Rectangle
         return center;
     }
 
+    /**
+     * Check if the given point is contained in this rectangle.
+     * Note that a point at ( 10, 20 ) won't be contained by
+     * a rectangle centerd at ( 0, 0 ), of width 40 and height 20.
+     * That's because a point is considered being contained in the rectangle
+     * if it's exactly on either the upper border, or the right one.
+     * 
+     * @param p A point
+     * @return Whether or not it's contained in this rectangle.
+     */
     public boolean contains(Point p)
     {
         double x = p.x();
