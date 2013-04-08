@@ -37,7 +37,6 @@ public class PPMWriter
 				int g = Color.sRGBEncode( color.green(), 100 );
 				int b = Color.sRGBEncode( color.blue(), 100 );
 				
-				
 				this.stream.print( r + " " + g + " " + b + " " );
 			}
 			
