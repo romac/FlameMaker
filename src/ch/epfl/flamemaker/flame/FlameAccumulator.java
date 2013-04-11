@@ -26,6 +26,7 @@ public final class FlameAccumulator
 		this.hitCount = Arrays2D.copyOf2DArray( hitCount );
 		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
 		
+		// FIXME: Computer maxCount on-the-go in Builder.
 		int maxCount = Arrays2D.maxOf2DArray( hitCount );
 		this.intensityDenominator = Math.log( maxCount + 1 );
 	}
