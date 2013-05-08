@@ -16,7 +16,7 @@ import ch.epfl.flamemaker.util.PPMWriter;
 public class FlamePPMMaker
 {
 
-	public static void main( String[] args )
+	public static void _main( String[] args )
 	{
 		// FlamePPMMaker.barnsley();
 		FlamePPMMaker.sharkfin();
