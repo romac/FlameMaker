@@ -101,7 +101,7 @@ public class Color
 		int sB = Color.sRGBEncode(  this.b, 255 );
 		
 		// Pack the three components into a single integer, one after the other.
-		return sR << 24 | sG << 16 | sB << 8;
+		return sR << 16 | sG << 8 | sB << 0;
 	}
 	
 	
