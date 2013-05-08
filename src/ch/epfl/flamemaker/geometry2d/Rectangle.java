@@ -108,11 +108,11 @@ public class Rectangle
         double newHeight = this.height();
         double newWidth = this.width();
 
-        if( newAspectRatio > 1 )
+        if( newAspectRatio > 1 || newAspectRatio == 1 && this.height > this.width )
         {
             newWidth = this.height * newAspectRatio;
         }
-        else if ( newAspectRatio < 1 )
+        else
         {
             newHeight = this.width() / newAspectRatio;
         }
