@@ -19,16 +19,12 @@ public final class FlameAccumulator
 
 	private int[][] hitCount;
 	private double[][] colorIndexSum;
-	private double intensityDenominator;
+	private double intensityDenominator = -1.0;
 
 	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum )
 	{
 		this.hitCount = Arrays2D.copyOf2DArray( hitCount );
 		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
-		
-		// FIXME: Computer maxCount on-the-go in Builder.
-		int maxCount = Arrays2D.maxOf2DArray( hitCount );
-		this.intensityDenominator = Math.log( maxCount + 1 );
 	}
 	
 	/**
@@ -56,6 +52,13 @@ public final class FlameAccumulator
 	 */
 	public double intensity( int x, int y )
 	{
+		// We only compute the intensity denominator if it hasn't been already by Builder.
+		// @see FlameAccumulator.Builder.build()
+		if( this.intensityDenominator < 0 )
+		{
+			this.intensityDenominator = Math.log( Arrays2D.maxOf2DArray( this.hitCount ) + 1 );
+		}
+			
 		if( x < 0 || x > this.width() - 1 )
 		{
 			throw new IndexOutOfBoundsException( "x (" + x  + ") is out of bounds." );
@@ -116,6 +119,8 @@ public final class FlameAccumulator
 		private int[][] hitCount;
 		private double[][] colorIndexSum;
 		private AffineTransformation transformation;
+		
+		private int maxHitCount = 0;
 
 		public Builder( Rectangle frame, int width, int height )
 		{
@@ -167,7 +172,12 @@ public final class FlameAccumulator
 			int y = ( int )Math.floor( p.y() );
 
 			this.hitCount[ x ][ y ] += 1;
-			this.colorIndexSum[ x ][ y ] += c; 
+			this.colorIndexSum[ x ][ y ] += c;
+			
+			if( this.hitCount[ x ][ y ] > this.maxHitCount )
+			{
+				this.maxHitCount = this.hitCount[ x ][ y ];
+			}
 		}
 		
 		/**
@@ -175,7 +185,9 @@ public final class FlameAccumulator
 		 */
 		public FlameAccumulator build()
 		{
-			return new FlameAccumulator( this.hitCount, this.colorIndexSum );
+			FlameAccumulator acc = new FlameAccumulator( this.hitCount, this.colorIndexSum );
+			acc.intensityDenominator = Math.log( this.maxHitCount + 1 );
+			return acc;
 		}
 	}
 }
