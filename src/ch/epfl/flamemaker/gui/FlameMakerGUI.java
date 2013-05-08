@@ -3,8 +3,6 @@ package ch.epfl.flamemaker.gui;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.InterpolatedPalette;
 import ch.epfl.flamemaker.color.Palette;

@@ -1,7 +1,6 @@
 package ch.epfl.flamemaker.flame;
 
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
-import ch.epfl.flamemaker.geometry2d.Line;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Transformation;
 
@@ -105,12 +104,5 @@ public class FlameTransformation implements Transformation
 		}
 		
 	}
-
-	@Override
-    public Line transformLine( Line l )
-    {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
 
 }

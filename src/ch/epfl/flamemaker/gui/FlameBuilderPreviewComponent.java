@@ -11,7 +11,6 @@ import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.Flame;
 import ch.epfl.flamemaker.flame.FlameAccumulator;
-import ch.epfl.flamemaker.flame.Flame.Builder;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 
 public class FlameBuilderPreviewComponent extends JComponent

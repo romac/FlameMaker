@@ -6,15 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-
 import javax.swing.JComponent;
 
 import ch.epfl.flamemaker.flame.Flame;
-import ch.epfl.flamemaker.flame.FlameAccumulator;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Arrow;
-import ch.epfl.flamemaker.geometry2d.Line;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 
