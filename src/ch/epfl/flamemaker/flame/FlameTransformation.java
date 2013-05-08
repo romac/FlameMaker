@@ -14,7 +14,7 @@ public class FlameTransformation implements Transformation
 	private AffineTransformation affineTransformation;
 	private double[] variationWeight;
 
-	FlameTransformation( AffineTransformation affineTransformation, double[] variationWeight )
+	public FlameTransformation( AffineTransformation affineTransformation, double[] variationWeight )
 	{
 		if( variationWeight.length != Variation.ALL_VARIATIONS.size() )
 		{
