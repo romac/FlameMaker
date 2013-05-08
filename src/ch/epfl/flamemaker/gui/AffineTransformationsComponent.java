@@ -74,7 +74,7 @@ public class AffineTransformationsComponent extends JComponent
     
     private void drawGrid()
     {
-    	this.g.setColor( new java.awt.Color( 0.8f, 0.8f, 0.8f ) );
+    	this.g.setColor( new java.awt.Color( 0.85f, 0.85f, 0.85f ) );
 		
 		for( double i = 1.0; i < expandedFrame.width() + 1; i += 1.0 )
 		{

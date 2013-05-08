@@ -23,8 +23,11 @@ public class FlameMakerGUI
 	
 	public void start()
     {
+		this.setUp();
+		
 		JFrame frame = new JFrame( "Flame Maker" );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		frame.setMinimumSize( new Dimension( 600, 300 ) );
 		
 		Container contentPane = frame.getContentPane(); 
 		contentPane.setLayout( new BorderLayout() );
@@ -45,7 +48,12 @@ public class FlameMakerGUI
 		topPanel.add( fractalPanel, fillConstraints );
 		
 		transformationsPanel.add( new AffineTransformationsComponent( this.builder, this.frame ) );
-		fractalPanel.add( this.getPreview() );
+		
+		FlameBuilderPreviewComponent preview = new FlameBuilderPreviewComponent(
+			this.builder, this.bgColor, this.palette, this.frame, this.density
+		);
+		
+		fractalPanel.add( preview );
 		
 		contentPane.add( topPanel, BorderLayout.CENTER );
 		
@@ -53,12 +61,8 @@ public class FlameMakerGUI
 		frame.setVisible( true );
     }
 	
-	private FlameBuilderPreviewComponent getPreview()
+	private void setUp()
 	{
-		
-		FlameBuilderPreviewComponent preview = new FlameBuilderPreviewComponent(
-			this.builder, this.bgColor, this.palette, this.frame, this.density
-		);
 		
 		this.builder.addTransformation( new FlameTransformation(
             new AffineTransformation(
@@ -83,8 +87,6 @@ public class FlameMakerGUI
             ),
             new double[] { 1, 0, 0, 0, 0, 0 }
         ) );
-		
-		return preview;
 	}
 	
 }
