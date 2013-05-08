@@ -46,8 +46,7 @@ public class FlameMakerGUI
 		topPanel.add( transformationsPanel, fillConstraints );
 		topPanel.add( fractalPanel, fillConstraints );
 		
-		transformationsPanel.add( new JLabel( "Hello, World" ) );
-		
+		transformationsPanel.add( new AffineTransformationsComponent( this.builder, this.frame ) );
 		fractalPanel.add( this.getPreview() );
 		
 		contentPane.add( topPanel, BorderLayout.CENTER );
