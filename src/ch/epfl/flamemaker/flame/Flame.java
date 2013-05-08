@@ -116,7 +116,12 @@ public class Flame
 		public Builder( Flame flame )
 		{
 			this.builders = new ArrayList<FlameTransformation.Builder>();
-
+			
+			if( flame == null )
+			{
+				return;
+			}
+			
 			for( FlameTransformation transformation : flame.transformations )
 			{
 				this.builders.add( new FlameTransformation.Builder( transformation ) );
