@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -65,6 +66,18 @@ public class FlameMakerGUI
 		/**
 		 * Window
 		 */
+		
+        try
+        {
+            for( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() )
+            {
+                if( "Nimbus".equals( info.getName() ) )
+                {
+                    UIManager.setLookAndFeel( info.getClassName() );
+                    break;
+                }
+            }
+        } catch( Exception e ) {}
 		
 		JFrame frame = new JFrame( "Flame Maker" );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
