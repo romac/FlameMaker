@@ -10,10 +10,18 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
  */
 public class FlameTransformation implements Transformation
 {
-
+	
 	private AffineTransformation affineTransformation;
 	private double[] variationWeight;
 
+	public static FlameTransformation IDENTITY()
+	{
+		return new FlameTransformation(
+			AffineTransformation.IDENTITY(),
+			new double[] { 1, 0, 0, 0, 0, 0 }
+		);
+	}
+	
 	public FlameTransformation( AffineTransformation affineTransformation, double[] variationWeight )
 	{
 		if( variationWeight.length != Variation.ALL_VARIATIONS.size() )
