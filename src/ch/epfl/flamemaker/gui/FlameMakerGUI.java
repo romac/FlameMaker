@@ -3,6 +3,7 @@ package ch.epfl.flamemaker.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -33,7 +34,6 @@ public class FlameMakerGUI
 	
 	private void setUp()
 	{
-		
 		this.builder.addTransformation( new FlameTransformation(
             new AffineTransformation(
             	-0.4113504, -0.7124804, -0.4,
@@ -66,7 +66,6 @@ public class FlameMakerGUI
 		/**
 		 * Window
 		 */
-		
         try
         {
             for( LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() )
@@ -101,7 +100,6 @@ public class FlameMakerGUI
 		/**
 		 * Affine transformations grid
 		 */
-		
 		final AffineTransformationsComponent affineTransformationsGrid = new AffineTransformationsComponent( this.builder, this.frame );
 		
 		JPanel transformationsPanel = new JPanel();
@@ -116,7 +114,6 @@ public class FlameMakerGUI
 		/**
 		 * Transformations list
 		 */
-		
 		final TransformationsListModel transformModel = new TransformationsListModel();
 		final JList transformList = new JList( transformModel );
 		transformList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
@@ -141,11 +138,11 @@ public class FlameMakerGUI
 		/*
 		 * Current transformation
 		 */
-		
-		// ← → ↑ ↓ ⟲ ⟳ ↔ ↕
+		DecimalFormat decimalFormat = new DecimalFormat( "#0.##" );
 		
 		JLabel translationLabel = new JLabel( "Translation" );
-		JFormattedTextField translationField = new JFormattedTextField();
+		JFormattedTextField translationField = new JFormattedTextField( decimalFormat );
+		translationField.setValue( 0.1 );
 		translationField.setHorizontalAlignment( SwingConstants.RIGHT );
 		JButton leftTranslationButton = new JButton( "←" );
 		JButton rightTranslationButton = new JButton( "→" );
@@ -154,12 +151,14 @@ public class FlameMakerGUI
 		
 		JLabel rotationLabel = new JLabel( "Rotation" );
 		JFormattedTextField rotationField = new JFormattedTextField();
+		rotationField.setValue( 15 );
 		rotationField.setHorizontalAlignment( SwingConstants.RIGHT );
 		JButton leftRotationButton = new JButton( "⟲" );
 		JButton rightRotationButton = new JButton( "⟳" );
 		
 		JLabel dilatationLabel = new JLabel( "Dilatation" );
-		JFormattedTextField dilatationField = new JFormattedTextField();
+		JFormattedTextField dilatationField = new JFormattedTextField( decimalFormat );
+		dilatationField.setValue( 1.05 );
 		dilatationField.setHorizontalAlignment( SwingConstants.RIGHT );
 		JButton moreHorizontalDilatationButton = new JButton( "+ ↔" );
 		JButton lessHorizontalDilatationButton = new JButton( "- ↔" );
@@ -167,7 +166,8 @@ public class FlameMakerGUI
 		JButton lessVerticalDilatationButton = new JButton( "- ↕" );
 		
 		JLabel transvectionLabel = new JLabel( "Transvection" );
-		JFormattedTextField transvectionField = new JFormattedTextField();
+		JFormattedTextField transvectionField = new JFormattedTextField( decimalFormat );
+		transvectionField.setValue( 0.1 );
 		transvectionField.setHorizontalAlignment( SwingConstants.RIGHT );
 		JButton leftTransvectionButton = new JButton( "←" );
 		JButton rightTransvectionButton = new JButton( "→" );
