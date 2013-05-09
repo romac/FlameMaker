@@ -14,6 +14,7 @@ import ch.epfl.flamemaker.color.InterpolatedPalette;
 import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.Flame;
 import ch.epfl.flamemaker.flame.FlameTransformation;
+import ch.epfl.flamemaker.flame.ObservableFlameBuilder;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.geometry2d.Point;
@@ -21,7 +22,7 @@ import ch.epfl.flamemaker.geometry2d.Point;
 public class FlameMakerGUI
 {
 	
-	private Flame.Builder builder 	= new Flame.Builder( null );
+	private ObservableFlameBuilder builder 	= new ObservableFlameBuilder( new Flame.Builder( null ) );
 	private Color bgColor 			= Color.BLACK;
 	private Palette palette 		= InterpolatedPalette.RGB_PALETTE;
 	private Rectangle frame 		= new Rectangle( new Point( -0.25, 0 ), 5, 4 );
@@ -88,7 +89,7 @@ public class FlameMakerGUI
 			this.builder, this.bgColor, this.palette, this.frame, this.density
 		);
 		
-		// fractalPanel.add( preview );
+		fractalPanel.add( preview );
 		
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );

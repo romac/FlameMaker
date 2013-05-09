@@ -11,25 +11,28 @@ import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.Flame;
 import ch.epfl.flamemaker.flame.FlameAccumulator;
+import ch.epfl.flamemaker.flame.ObservableFlameBuilder;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 
-public class FlameBuilderPreviewComponent extends JComponent
+public class FlameBuilderPreviewComponent extends JComponent implements ObservableFlameBuilder.Observer 
 {
 
 	private static final long serialVersionUID = 4246053641524095098L;
-	private Flame.Builder builder;
+	private ObservableFlameBuilder builder;
 	private Color bgColor;
 	private Palette palette;
 	private Rectangle frame;
 	private int density;
 
-	public FlameBuilderPreviewComponent( Flame.Builder builder, Color bgColor, Palette palette, Rectangle frame, int density )
+	public FlameBuilderPreviewComponent( ObservableFlameBuilder builder, Color bgColor, Palette palette, Rectangle frame, int density )
 	{
 		this.builder = builder;
 		this.bgColor = bgColor;
 		this.palette = palette;
 		this.frame = frame;
 		this.density = density;
+		
+		this.builder.addObserver( this );
 	}
 	
 	@Override
@@ -72,6 +75,12 @@ public class FlameBuilderPreviewComponent extends JComponent
 		
 		return new Dimension( (int)parentSize.getWidth() - 20, (int)parentSize.getHeight() - 35 );
 	}
+
+	@Override
+    public void flameBuilderChanged()
+    {
+	    this.repaint();
+    }
 	
 	
 }

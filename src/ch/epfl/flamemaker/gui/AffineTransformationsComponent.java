@@ -8,17 +8,17 @@ import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import javax.swing.JComponent;
 
-import ch.epfl.flamemaker.flame.Flame;
+import ch.epfl.flamemaker.flame.ObservableFlameBuilder;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Arrow;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 
-public class AffineTransformationsComponent extends JComponent
+public class AffineTransformationsComponent extends JComponent implements ObservableFlameBuilder.Observer
 {
 
     private static final long serialVersionUID = -4507224814162575365L;
-	private Flame.Builder builder;
+	private ObservableFlameBuilder builder;
 	private Rectangle frame;
 	private int highlightedTransformationIndex = 0;
 	
@@ -26,10 +26,12 @@ public class AffineTransformationsComponent extends JComponent
 	private Rectangle expandedFrame;
 	private AffineTransformation transform;
     
-    public AffineTransformationsComponent( Flame.Builder builder, Rectangle frame )
+    public AffineTransformationsComponent( ObservableFlameBuilder builder, Rectangle frame )
     {
     	this.builder = builder;
     	this.frame = frame;
+    	
+    	this.builder.addObserver( this );
     }
     
     @Override
@@ -139,6 +141,12 @@ public class AffineTransformationsComponent extends JComponent
     {
 	    this.highlightedTransformationIndex = highlightedTransformationIndex;
 	    this.repaint();
+    }
+
+	@Override
+    public void flameBuilderChanged()
+    {
+		this.repaint();
     }
     
 }
