@@ -29,7 +29,6 @@ public class FlameMakerGUI
 	private int density 			= 50;
 	private int selectedTransformationIndex = 0;
 	private ArrayList<TransformationSelectionObserver> selectedTransformationObservers = new ArrayList<TransformationSelectionObserver>();
-	private AffineTransformationsComponent affineTransformationsGrid;
 	
 	private void setUp()
 	{
@@ -63,6 +62,10 @@ public class FlameMakerGUI
     {
 		this.setUp();
 		
+		/**
+		 * Window
+		 */
+		
 		JFrame frame = new JFrame( "Flame Maker" );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setMinimumSize( new Dimension( 600, 500 ) );
@@ -70,33 +73,36 @@ public class FlameMakerGUI
 		Container contentPane = frame.getContentPane(); 
 		contentPane.setLayout( new BorderLayout() );
 		
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout( new GridLayout( 1, 2 ) );
-		
-		JPanel transformationsPanel = new JPanel();
-		transformationsPanel.setBorder( BorderFactory.createTitledBorder( "Transformations affines" ) );
-		
-		JPanel fractalPanel = new JPanel();
-		fractalPanel.setBorder( BorderFactory.createTitledBorder( "Fractale" ) );
-		
-		topPanel.add( transformationsPanel );
-		topPanel.add( fractalPanel );
-		
-		this.affineTransformationsGrid = new AffineTransformationsComponent( this.builder, this.frame );
-		transformationsPanel.add( this.affineTransformationsGrid );
+		/**
+		 * Fractal preview
+		 */
 		
 		FlameBuilderPreviewComponent preview = new FlameBuilderPreviewComponent(
 			this.builder, this.bgColor, this.palette, this.frame, this.density
 		);
 		
-		fractalPanel.add( preview );
+		JPanel fractalPanel = new JPanel();
+		fractalPanel.setBorder( BorderFactory.createTitledBorder( "Fractale" ) );
+		// fractalPanel.add( preview );
 		
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );
-		bottomPanel.setLayout( new BoxLayout( bottomPanel, BoxLayout.LINE_AXIS ) );
+		/**
+		 * Affine transformations grid
+		 */
 		
-		JPanel editPanel = new JPanel();
-		editPanel.setLayout( new BorderLayout() );
+		final AffineTransformationsComponent affineTransformationsGrid = new AffineTransformationsComponent( this.builder, this.frame );
+		
+		JPanel transformationsPanel = new JPanel();
+		transformationsPanel.setBorder( BorderFactory.createTitledBorder( "Transformations affines" ) );
+		transformationsPanel.add( affineTransformationsGrid );
+		
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout( new GridLayout( 1, 2 ) );
+		topPanel.add( transformationsPanel );
+		topPanel.add( fractalPanel );
+		
+		/**
+		 * Transformations list
+		 */
 		
 		final TransformationsListModel transformModel = new TransformationsListModel();
 		final JList transformList = new JList( transformModel );
@@ -105,18 +111,145 @@ public class FlameMakerGUI
 		transformList.setSelectedIndex( 0 );
 		
 		JScrollPane transformListPane = new JScrollPane( transformList );
-		JPanel transformListButtons = new JPanel( new GridLayout( 1, 2 ) );
 		
 		final JButton addTransformationButton = new JButton( "Ajouter" );
 		final JButton removeTransformationButton = new JButton( "Supprimer" );
 		
+		JPanel transformListButtons = new JPanel( new GridLayout( 1, 2 ) );
 		transformListButtons.add( removeTransformationButton );
 		transformListButtons.add( addTransformationButton );
 		
+		JPanel editPanel = new JPanel( new BorderLayout() );
+		editPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );
+		// editPanel.setPreferredSize( new Dimension( 100, 100 ) );
 		editPanel.add( transformListPane, BorderLayout.CENTER );
 		editPanel.add( transformListButtons, BorderLayout.PAGE_END );
 		
+		/*
+		 * Current transformation
+		 */
+		
+		// ← → ↑ ↓ ⟲ ⟳ ↔ ↕
+		
+		JLabel translationLabel = new JLabel( "Translation" );
+		JFormattedTextField translationField = new JFormattedTextField();
+		translationField.setHorizontalAlignment( SwingConstants.RIGHT );
+		JButton leftTranslationButton = new JButton( "←" );
+		JButton rightTranslationButton = new JButton( "→" );
+		JButton upTranslationButton = new JButton( "↑" );
+		JButton downTranslationButton = new JButton( "↓" );
+		
+		JLabel rotationLabel = new JLabel( "Rotation" );
+		JFormattedTextField rotationField = new JFormattedTextField();
+		rotationField.setHorizontalAlignment( SwingConstants.RIGHT );
+		JButton leftRotationButton = new JButton( "⟲" );
+		JButton rightRotationButton = new JButton( "⟳" );
+		
+		JLabel dilatationLabel = new JLabel( "Dilatation" );
+		JFormattedTextField dilatationField = new JFormattedTextField();
+		dilatationField.setHorizontalAlignment( SwingConstants.RIGHT );
+		JButton moreHorizontalDilatationButton = new JButton( "+ ↔" );
+		JButton lessHorizontalDilatationButton = new JButton( "- ↔" );
+		JButton moreVerticalDilatationButton = new JButton( "+ ↕" );
+		JButton lessVerticalDilatationButton = new JButton( "- ↕" );
+		
+		JLabel transvectionLabel = new JLabel( "Transvection" );
+		JFormattedTextField transvectionField = new JFormattedTextField();
+		transvectionField.setHorizontalAlignment( SwingConstants.RIGHT );
+		JButton leftTransvectionButton = new JButton( "←" );
+		JButton rightTransvectionButton = new JButton( "→" );
+		JButton upTransvectionButton = new JButton( "↑" );
+		JButton downTransvectionButton = new JButton( "↓" );
+		
+		JPanel editAffinePanel = new JPanel();
+		// editAffinePanel.setPreferredSize( new Dimension( 500, 200 ) );
+		GroupLayout editAffineLayout = new GroupLayout( editAffinePanel );
+		// editAffineLayout.setAutoCreateGaps(true);
+		// editAffineLayout.setAutoCreateContainerGaps(true);
+		
+		editAffineLayout.setHorizontalGroup(
+			editAffineLayout.createSequentialGroup()
+				.addGroup( editAffineLayout.createParallelGroup( GroupLayout.Alignment.TRAILING )
+					.addComponent( translationLabel )
+					.addComponent( rotationLabel )
+					.addComponent( dilatationLabel )
+					.addComponent( transvectionLabel )
+				)
+				.addGroup( editAffineLayout.createParallelGroup()
+					.addComponent( translationField )
+					.addComponent( rotationField )
+					.addComponent( dilatationField )
+					.addComponent( transvectionField )
+				)
+				.addGroup( editAffineLayout.createParallelGroup()
+					.addComponent( leftTranslationButton )
+					.addComponent( leftRotationButton )
+					.addComponent( moreHorizontalDilatationButton )
+					.addComponent( leftTransvectionButton )
+				)
+				.addGroup( editAffineLayout.createParallelGroup()
+					.addComponent( rightTranslationButton )
+					.addComponent( rightRotationButton )
+					.addComponent( lessHorizontalDilatationButton )
+					.addComponent( rightTransvectionButton )
+				)
+				.addGroup( editAffineLayout.createParallelGroup()
+					.addComponent( upTranslationButton )
+					.addComponent( moreVerticalDilatationButton )
+					.addComponent( upTransvectionButton )
+				)
+				.addGroup( editAffineLayout.createParallelGroup()
+					.addComponent( downTranslationButton )
+					.addComponent( lessVerticalDilatationButton )
+					.addComponent( downTransvectionButton )
+				)
+		);
+		
+		editAffineLayout.setVerticalGroup(
+			editAffineLayout.createSequentialGroup()
+				.addGroup( editAffineLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+					.addComponent( translationLabel )
+					.addComponent( translationField )
+					.addComponent( leftTranslationButton )
+					.addComponent( rightTranslationButton )
+					.addComponent( upTranslationButton )
+					.addComponent( downTranslationButton )
+				)
+				.addGroup( editAffineLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+    				.addComponent( rotationLabel )
+    				.addComponent( rotationField )
+    				.addComponent( leftRotationButton )
+    				.addComponent( rightRotationButton )
+    			)
+    			.addGroup( editAffineLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+    				.addComponent( dilatationLabel )
+    				.addComponent( dilatationField )
+    				.addComponent( moreHorizontalDilatationButton )
+    				.addComponent( lessHorizontalDilatationButton )
+    				.addComponent( moreVerticalDilatationButton )
+    				.addComponent( lessVerticalDilatationButton )
+    			)
+    			.addGroup( editAffineLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+    				.addComponent( transvectionLabel )
+    				.addComponent( transvectionField )
+    				.addComponent( leftTransvectionButton )
+    				.addComponent( rightTransvectionButton )
+    				.addComponent( upTransvectionButton )
+    				.addComponent( downTransvectionButton )
+    			)
+		);
+		
+		editAffinePanel.setLayout( editAffineLayout );
+
+		JPanel editCurrentPanel = new JPanel();
+		editCurrentPanel.setBorder( BorderFactory.createTitledBorder( "Transformation courante" ) );
+		editCurrentPanel.setLayout( new BoxLayout( editCurrentPanel, BoxLayout.PAGE_AXIS ) );
+		editCurrentPanel.add( editAffinePanel );
+		
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout( new BoxLayout( bottomPanel, BoxLayout.LINE_AXIS ) );
 		bottomPanel.add( editPanel );
+		bottomPanel.add( editCurrentPanel );
 		
 		contentPane.add( topPanel, BorderLayout.CENTER );
 		contentPane.add( bottomPanel, BorderLayout.PAGE_END );
@@ -237,7 +370,7 @@ public class FlameMakerGUI
 		@Override
         public String getElementAt( int index )
         {
-	        return "Transformation n�" + ( index + 1 );
+	        return "Transformation n°" + ( index + 1 );
         }
 
 		@Override
