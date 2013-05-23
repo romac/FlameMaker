@@ -4,9 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.*;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -131,14 +134,13 @@ public class FlameMakerGUI
 		
 		JPanel editPanel = new JPanel( new BorderLayout() );
 		editPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );
-		// editPanel.setPreferredSize( new Dimension( 100, 100 ) );
 		editPanel.add( transformListPane, BorderLayout.CENTER );
 		editPanel.add( transformListButtons, BorderLayout.PAGE_END );
 		
 		/*
 		 * Current transformation
 		 */
-		DecimalFormat decimalFormat = new DecimalFormat( "#0.##" );
+		DecimalFormat decimalFormat = new DecimalFormat( "#0.00" );
 		
 		JLabel translationLabel = new JLabel( "Translation" );
 		JFormattedTextField translationField = new JFormattedTextField( decimalFormat );
@@ -149,6 +151,47 @@ public class FlameMakerGUI
 		JButton upTranslationButton = new JButton( "↑" );
 		JButton downTranslationButton = new JButton( "↓" );
 		
+		leftTranslationButton.addActionListener( new TransformationButtonListener( translationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newTranslation(
+					-this.doubleValue(), 0
+				);
+			}
+		} );
+		rightTranslationButton.addActionListener( new TransformationButtonListener( translationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newTranslation(
+					this.doubleValue(), 0
+				);
+			}
+		} );
+		upTranslationButton.addActionListener( new TransformationButtonListener( translationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newTranslation(
+					0, -this.doubleValue()
+				);
+			}
+		} );
+		downTranslationButton.addActionListener( new TransformationButtonListener( translationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newTranslation(
+					0, this.doubleValue()
+				);
+			}
+		} );
+		
 		JLabel rotationLabel = new JLabel( "Rotation" );
 		JFormattedTextField rotationField = new JFormattedTextField();
 		rotationField.setValue( 15 );
@@ -156,14 +199,98 @@ public class FlameMakerGUI
 		JButton leftRotationButton = new JButton( "⟲" );
 		JButton rightRotationButton = new JButton( "⟳" );
 		
+		leftRotationButton.addActionListener( new TransformationButtonListener( rotationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newRotation( -Math.toRadians( this.doubleValue() ) );
+			}
+		} );
+		rightRotationButton.addActionListener( new TransformationButtonListener( rotationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newRotation( Math.toRadians( this.doubleValue() ) );
+			}
+		} );
+		
 		JLabel dilatationLabel = new JLabel( "Dilatation" );
 		JFormattedTextField dilatationField = new JFormattedTextField( decimalFormat );
 		dilatationField.setValue( 1.05 );
+		dilatationField.setInputVerifier( new InputVerifier()
+		{
+			@Override
+			public boolean verify( JComponent component )
+			{
+				JFormattedTextField field = ( JFormattedTextField )component;
+				double previousValue = Double.valueOf( field.getValue().toString() );
+				String currentText = field.getText();
+				AbstractFormatter formatter = field.getFormatter();
+				
+				try
+                {
+	                double currentValue = Double.valueOf( currentText );
+	                
+	                if( currentValue == 0.0 )
+	                {
+	                	throw new Exception( "Invalid value" );
+	                }
+                }
+                catch( Exception e )
+                {
+                	try
+                    {
+	                    field.setText( formatter.valueToString( previousValue ) );
+                    }
+                    catch( ParseException e1 )
+                    {
+	                    field.setText( "1.05" );
+                    }
+                }
+				
+				return true;
+			}
+		} );
 		dilatationField.setHorizontalAlignment( SwingConstants.RIGHT );
 		JButton moreHorizontalDilatationButton = new JButton( "+ ↔" );
 		JButton lessHorizontalDilatationButton = new JButton( "- ↔" );
 		JButton moreVerticalDilatationButton = new JButton( "+ ↕" );
 		JButton lessVerticalDilatationButton = new JButton( "- ↕" );
+		
+		moreHorizontalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newScaling( this.doubleValue(), 0 );
+			}
+		} );
+		lessHorizontalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newScaling( 1 / this.doubleValue(), 0 );
+			}
+		} );
+		moreVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newScaling( 0, this.doubleValue() );
+			}
+		} );
+		lessVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newScaling( 0, 1 / this.doubleValue() );
+			}
+		} );
 		
 		JLabel transvectionLabel = new JLabel( "Transvection" );
 		JFormattedTextField transvectionField = new JFormattedTextField( decimalFormat );
@@ -174,11 +301,41 @@ public class FlameMakerGUI
 		JButton upTransvectionButton = new JButton( "↑" );
 		JButton downTransvectionButton = new JButton( "↓" );
 		
+		leftTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newShearX( -this.doubleValue() );
+			}
+		} );
+		rightTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newShearX( this.doubleValue() );
+			}
+		} );
+		upTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newShearY( -this.doubleValue() );
+			}
+		} );
+		downTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
+		{
+			@Override
+			public void run()
+			{
+				this.transformation = AffineTransformation.newShearY( this.doubleValue() );
+			}
+		} );
+		
 		JPanel editAffinePanel = new JPanel();
-		// editAffinePanel.setPreferredSize( new Dimension( 500, 200 ) );
 		GroupLayout editAffineLayout = new GroupLayout( editAffinePanel );
-		// editAffineLayout.setAutoCreateGaps(true);
-		// editAffineLayout.setAutoCreateContainerGaps(true);
 		
 		editAffineLayout.setHorizontalGroup(
 			editAffineLayout.createSequentialGroup()
@@ -398,5 +555,38 @@ public class FlameMakerGUI
 	{
 		void selectionChanged();
 	}
+	
+	public abstract class TransformationButtonListener implements ActionListener, Runnable
+	{
+		protected JFormattedTextField field;  
+		protected AffineTransformation transformation;
+		
+		public TransformationButtonListener( JFormattedTextField field )
+		{
+			this.field = field;
+		}
+		
+		@Override
+	    public void actionPerformed( ActionEvent e )
+	    {
+			int index = getSelectedTransformationIndex();
+			AffineTransformation current = builder.affineTransformation( index );
+			this.run();
+			if( this.transformation != null )
+			{
+				builder.setAffineTransformation(
+					index,
+					current.composeWith( this.transformation )
+				);
+			}
+	    }
+		
+		protected double doubleValue()
+		{
+			return Double.valueOf( this.field.getValue().toString() );
+		}
+
+	}
+
 	
 }
