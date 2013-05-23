@@ -3,9 +3,6 @@ package ch.epfl.flamemaker.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
@@ -17,8 +14,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.MouseInputAdapter;
-
 import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.InterpolatedPalette;
 import ch.epfl.flamemaker.color.Palette;
@@ -40,8 +35,6 @@ public class FlameMakerGUI
 	private int density 			= 50;
 	private int selectedTransformationIndex = 0;
 	private ArrayList<TransformationSelectionObserver> selectedTransformationObservers = new ArrayList<TransformationSelectionObserver>();
-	
-	private boolean shouldRepaintPreview = true;  
 	
 	private void setUp()
 	{
@@ -92,6 +85,7 @@ public class FlameMakerGUI
 		JFrame frame = new JFrame( "Flame Maker" );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setMinimumSize( new Dimension( 600, 500 ) );
+		frame.setPreferredSize( new Dimension( 600, 500 ) );
 		
 		Container contentPane = frame.getContentPane(); 
 		contentPane.setLayout( new BorderLayout() );

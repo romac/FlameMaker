@@ -124,12 +124,7 @@ public class AffineTransformationsComponent extends JComponent implements Observ
 	{
 		Dimension parentSize = this.getParent().getSize();
 		
-		if( parentSize.getWidth() < 200 || parentSize.getHeight() < 100 )
-		{
-			return new Dimension( 400, 400 );
-		}
-		
-		return new Dimension( (int)parentSize.getWidth() - 20, (int)parentSize.getHeight() - 35 );
+		return new Dimension( ( int )parentSize.getWidth() - 20, ( int )parentSize.getHeight() - 50 );
 	}
 
 	public int getHighlightedTransformationIndex()
