@@ -3,16 +3,21 @@ package ch.epfl.flamemaker.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.*;
 import javax.swing.JFormattedTextField.AbstractFormatter;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MouseInputAdapter;
 
 import ch.epfl.flamemaker.color.Color;
 import ch.epfl.flamemaker.color.InterpolatedPalette;
@@ -20,6 +25,7 @@ import ch.epfl.flamemaker.color.Palette;
 import ch.epfl.flamemaker.flame.Flame;
 import ch.epfl.flamemaker.flame.FlameTransformation;
 import ch.epfl.flamemaker.flame.ObservableFlameBuilder;
+import ch.epfl.flamemaker.flame.Variation;
 import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.geometry2d.Point;
@@ -34,6 +40,8 @@ public class FlameMakerGUI
 	private int density 			= 50;
 	private int selectedTransformationIndex = 0;
 	private ArrayList<TransformationSelectionObserver> selectedTransformationObservers = new ArrayList<TransformationSelectionObserver>();
+	
+	private boolean shouldRepaintPreview = true;  
 	
 	private void setUp()
 	{
@@ -98,7 +106,7 @@ public class FlameMakerGUI
 		
 		JPanel fractalPanel = new JPanel();
 		fractalPanel.setBorder( BorderFactory.createTitledBorder( "Fractale" ) );
-		// fractalPanel.add( preview );
+		fractalPanel.add( preview );
 		
 		/**
 		 * Affine transformations grid
@@ -134,13 +142,14 @@ public class FlameMakerGUI
 		
 		JPanel editPanel = new JPanel( new BorderLayout() );
 		editPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );
+		// editPanel.setMaximumSize( new Dimension( 500, 600 ) );
 		editPanel.add( transformListPane, BorderLayout.CENTER );
 		editPanel.add( transformListButtons, BorderLayout.PAGE_END );
 		
 		/*
 		 * Current transformation
 		 */
-		DecimalFormat decimalFormat = new DecimalFormat( "#0.00" );
+		DecimalFormat decimalFormat = new DecimalFormat( "#0.0#" );
 		
 		JLabel translationLabel = new JLabel( "Translation" );
 		JFormattedTextField translationField = new JFormattedTextField( decimalFormat );
@@ -410,11 +419,112 @@ public class FlameMakerGUI
 		);
 		
 		editAffinePanel.setLayout( editAffineLayout );
+		
+		/**
+		 * Variations weights
+		 */
+		JPanel editWeightsPanel = new JPanel();
+		GroupLayout editWeightsLayout = new GroupLayout( editWeightsPanel );
+		
+		JLabel linearLabel = new JLabel( "Linear" );
+		final JFormattedTextField linearField = new JFormattedTextField( decimalFormat );
+		
+		JLabel sinusoidalLabel = new JLabel( "Sinusoidal" );
+		final JFormattedTextField sinusoidalField = new JFormattedTextField( decimalFormat );
+		
+		JLabel sphericalLabel = new JLabel( "Spherical" );
+		final JFormattedTextField sphericalField = new JFormattedTextField( decimalFormat );
+		
+		JLabel swirlLabel = new JLabel( "Swirl" );
+		final JFormattedTextField swirlField = new JFormattedTextField( decimalFormat );
+		
+		JLabel horseshoeLabel = new JLabel( "Horseshoe" );
+		final JFormattedTextField horseshoeField = new JFormattedTextField( decimalFormat );
+		
+		JLabel bubbleLabel = new JLabel( "Bubble" );
+		final JFormattedTextField bubbleField = new JFormattedTextField( decimalFormat );
+		
+		this.addSelectedTransformationObserver( new TransformationSelectionObserver()
+		{
+			@Override
+			public void selectionChanged()
+			{
+				int index = getSelectedTransformationIndex();
+				
+				linearField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 0 ) ) ) );
+				sinusoidalField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 1 ) ) ) );
+				sphericalField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 2 ) ) ) );
+				swirlField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 3 ) ) ) );
+				horseshoeField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 4 ) ) ) );
+				bubbleField.setText( String.valueOf( builder.variationWeight( index, Variation.ALL_VARIATIONS.get( 5 ) ) ) );
+			}
+		} );
+		
+		linearField.addPropertyChangeListener( "value", new WeightChangeListener( 0 ) );
+		sinusoidalField.addPropertyChangeListener( "value", new WeightChangeListener( 1 ) );
+		sphericalField.addPropertyChangeListener( "value", new WeightChangeListener( 2 ) );
+		swirlField.addPropertyChangeListener( "value", new WeightChangeListener( 3 ) );
+		horseshoeField.addPropertyChangeListener( "value", new WeightChangeListener( 4 ) );
+		bubbleField.addPropertyChangeListener( "value", new WeightChangeListener( 5 ) );
+		
+		editWeightsLayout.setHorizontalGroup(
+			editWeightsLayout.createSequentialGroup()
+				.addPreferredGap( ComponentPlacement.UNRELATED )
+				.addGroup( editWeightsLayout.createParallelGroup( GroupLayout.Alignment.TRAILING )
+					.addComponent( linearLabel )
+					.addComponent( swirlLabel )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup()
+					.addComponent( linearField )
+					.addComponent( swirlField )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup( GroupLayout.Alignment.TRAILING )
+					.addComponent( sinusoidalLabel )
+					.addComponent( horseshoeLabel )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup()
+					.addComponent( sinusoidalField )
+					.addComponent( horseshoeField )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup( GroupLayout.Alignment.TRAILING )
+					.addComponent( sphericalLabel )
+					.addComponent( bubbleLabel )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup()
+					.addComponent( sphericalField )
+					.addComponent( bubbleField )
+				)
+		);
+		
+		editWeightsLayout.setVerticalGroup(
+			editWeightsLayout.createSequentialGroup()
+				.addPreferredGap( ComponentPlacement.UNRELATED )
+				.addGroup( editWeightsLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+					.addComponent( linearLabel )
+					.addComponent( linearField )
+					.addComponent( sinusoidalLabel )
+					.addComponent( sinusoidalField )
+					.addComponent( sphericalLabel )
+					.addComponent( sphericalField )
+				)
+				.addGroup( editWeightsLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
+					.addComponent( swirlLabel )
+					.addComponent( swirlField )
+					.addComponent( horseshoeLabel )
+					.addComponent( horseshoeField )
+					.addComponent( bubbleLabel )
+					.addComponent( bubbleField )
+				)
+		);
+		
+		editWeightsPanel.setLayout( editWeightsLayout );
 
 		JPanel editCurrentPanel = new JPanel();
 		editCurrentPanel.setBorder( BorderFactory.createTitledBorder( "Transformation courante" ) );
 		editCurrentPanel.setLayout( new BoxLayout( editCurrentPanel, BoxLayout.PAGE_AXIS ) );
 		editCurrentPanel.add( editAffinePanel );
+		editCurrentPanel.add( new JSeparator() );
+		editCurrentPanel.add( editWeightsPanel );
 		
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout( new BoxLayout( bottomPanel, BoxLayout.LINE_AXIS ) );
@@ -424,6 +534,7 @@ public class FlameMakerGUI
 		contentPane.add( topPanel, BorderLayout.CENTER );
 		contentPane.add( bottomPanel, BorderLayout.PAGE_END );
 		
+		this.setSelectedTransformationIndex( 0 );
 		frame.pack();
 		frame.setVisible( true );
 		
@@ -586,6 +697,27 @@ public class FlameMakerGUI
 			return Double.valueOf( this.field.getValue().toString() );
 		}
 
+	}
+	
+	public class WeightChangeListener implements PropertyChangeListener
+	{
+		private int variationIndex;
+		
+		public WeightChangeListener( int variationIndex )
+		{
+			this.variationIndex = variationIndex;
+		}
+		
+		@Override
+        public void propertyChange( PropertyChangeEvent e )
+        {
+			double value = Double.valueOf( e.getNewValue().toString() );
+			builder.setVariationWeight(
+				getSelectedTransformationIndex(),
+				Variation.ALL_VARIATIONS.get( this.variationIndex ),
+				value
+			);
+        }
 	}
 
 	

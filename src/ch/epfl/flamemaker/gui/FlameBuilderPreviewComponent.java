@@ -23,6 +23,7 @@ public class FlameBuilderPreviewComponent extends JComponent implements Observab
 	private Palette palette;
 	private Rectangle frame;
 	private int density;
+	private boolean shouldRepaint = true;
 
 	public FlameBuilderPreviewComponent( ObservableFlameBuilder builder, Color bgColor, Palette palette, Rectangle frame, int density )
 	{
@@ -38,14 +39,16 @@ public class FlameBuilderPreviewComponent extends JComponent implements Observab
 	@Override
 	protected void paintComponent( Graphics g0 )
 	{
+		if( !this.shouldRepaint ) return;
+		
 		Graphics2D g = ( Graphics2D )g0;
 		
-		System.out.println( "Component: " + this.getWidth() + ", " + this.getHeight() );
+		// System.out.println( "Component: " + this.getWidth() + ", " + this.getHeight() );
 		double aspectRatio = ( double )this.getWidth() / ( double )this.getHeight();
-		System.out.println( "Component aspect ratio: " + aspectRatio );
-		System.out.println( "Frame: " + frame );
+		// System.out.println( "Component aspect ratio: " + aspectRatio );
+		// 	System.out.println( "Frame: " + frame );
 		Rectangle expandedFrame = frame.expandToAspectRatio( aspectRatio );
-		System.out.println( "Expanded frame : " + expandedFrame );
+		// System.out.println( "Expanded frame : " + expandedFrame );
 		BufferedImage image = new BufferedImage( this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB );
 		
 		Flame flame = this.builder.build();
@@ -80,6 +83,11 @@ public class FlameBuilderPreviewComponent extends JComponent implements Observab
     public void flameBuilderChanged()
     {
 	    this.repaint();
+    }
+
+	public void setShouldRepaint( boolean shouldRepaint )
+    {
+	    this.shouldRepaint = shouldRepaint;
     }
 	
 	
