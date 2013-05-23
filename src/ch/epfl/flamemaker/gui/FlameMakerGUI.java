@@ -267,7 +267,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newScaling( this.doubleValue(), 0 );
+				this.transformation = AffineTransformation.newScaling( this.doubleValue(), 1 );
 			}
 		} );
 		lessHorizontalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
@@ -275,7 +275,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newScaling( 1 / this.doubleValue(), 0 );
+				this.transformation = AffineTransformation.newScaling( 1 / this.doubleValue(), 1 );
 			}
 		} );
 		moreVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
@@ -283,7 +283,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newScaling( 0, this.doubleValue() );
+				this.transformation = AffineTransformation.newScaling( 1, this.doubleValue() );
 			}
 		} );
 		lessVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
@@ -291,7 +291,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newScaling( 0, 1 / this.doubleValue() );
+				this.transformation = AffineTransformation.newScaling( 1, 1 / this.doubleValue() );
 			}
 		} );
 		
@@ -325,7 +325,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newShearY( -this.doubleValue() );
+				this.transformation = AffineTransformation.newShearY( this.doubleValue() );
 			}
 		} );
 		downTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
@@ -333,7 +333,7 @@ public class FlameMakerGUI
 			@Override
 			public void run()
 			{
-				this.transformation = AffineTransformation.newShearY( this.doubleValue() );
+				this.transformation = AffineTransformation.newShearY( -this.doubleValue() );
 			}
 		} );
 		
@@ -540,7 +540,7 @@ public class FlameMakerGUI
 				transformModel.addTransformation();
 				
 				transformList.setSelectedIndex( transformModel.getSize() - 1 );
-				transformList.ensureIndexIsVisible(transformList.getSelectedIndex());
+				transformList.ensureIndexIsVisible( transformList.getSelectedIndex() );
 				
 				if( transformModel.getSize() > 1 )
 				{
@@ -681,7 +681,7 @@ public class FlameMakerGUI
 			{
 				builder.setAffineTransformation(
 					index,
-					current.composeWith( this.transformation )
+					this.transformation.composeWith( current )
 				);
 			}
 	    }
