@@ -16,15 +16,33 @@ import ch.epfl.flamemaker.util.Arrays2D;
  */
 public final class FlameAccumulator
 {
-
+	
+	/**
+	 * A 2-dimensional array holding the hit count for each point.
+	 */
 	private int[][] hitCount;
+	
+	/**
+	 * A 2-dimensional array holding the color index for each point.
+	 */
 	private double[][] colorIndexSum;
-	private double intensityDenominator = -1.0;
+	
+	/**
+	 * The intensity denominator.
+	 */
+	private double intensityDenominator;
 
-	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum )
+	/**
+	 * Create a new accumulator.
+	 * 
+	 * @param hitCount
+	 * @param colorIndexSum
+	 */
+	private FlameAccumulator( int[][] hitCount, double[][] colorIndexSum, double intensityDenominator )
 	{
 		this.hitCount = Arrays2D.copyOf2DArray( hitCount );
 		this.colorIndexSum = Arrays2D.copyOf2DArray( colorIndexSum );
+		this.intensityDenominator = intensityDenominator;
 	}
 	
 	/**
@@ -52,13 +70,6 @@ public final class FlameAccumulator
 	 */
 	public double intensity( int x, int y )
 	{
-		// We only compute the intensity denominator if it hasn't been already by Builder.
-		// @see FlameAccumulator.Builder.build()
-		if( this.intensityDenominator < 0 )
-		{
-			this.intensityDenominator = Math.log( Arrays2D.maxOf2DArray( this.hitCount ) + 1 );
-		}
-			
 		if( x < 0 || x > this.width() - 1 )
 		{
 			throw new IndexOutOfBoundsException( "x (" + x  + ") is out of bounds." );
@@ -141,7 +152,7 @@ public final class FlameAccumulator
 			this.colorIndexSum = new double[ width ][ height ];
 			
 			// Since hit points are contained in a frame whose origin is is not necessarily at ( 0, 0 ),
-			// and which might now be as wide or height as the output image,
+			// and which might now be as wide or high as the output image,
 			// we need to translate and scale the point from their coordinates in the plan
 			// to pixel coordinates in the bitmap.
 			// We do this using an affine transformation that we'll use in {@link #hit( Point, double )}.
@@ -185,8 +196,8 @@ public final class FlameAccumulator
 		 */
 		public FlameAccumulator build()
 		{
-			FlameAccumulator acc = new FlameAccumulator( this.hitCount, this.colorIndexSum );
-			acc.intensityDenominator = Math.log( this.maxHitCount + 1 );
+			FlameAccumulator acc = new FlameAccumulator( this.hitCount, this.colorIndexSum, Math.log( this.maxHitCount + 1 ) );
+			
 			return acc;
 		}
 	}

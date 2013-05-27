@@ -14,6 +14,9 @@ public class FlameTransformation implements Transformation
 	private AffineTransformation affineTransformation;
 	private double[] variationWeight;
 
+	/**
+	 * @return The identity transformation
+	 */
 	public static FlameTransformation IDENTITY()
 	{
 		return new FlameTransformation(
@@ -22,9 +25,16 @@ public class FlameTransformation implements Transformation
 		);
 	}
 	
-	public FlameTransformation( AffineTransformation affineTransformation, double[] variationWeight )
+	/**
+	 * Create a new flame transformation with the given affine transformation and variations weights.
+	 * 
+	 * @param affineTransformation The affine transformation,
+	 * @param variationWeights The weights of the variations,
+	 * 						   in the same order as they are defined in {@link Variation}.
+	 */
+	public FlameTransformation( AffineTransformation affineTransformation, double[] variationWeights )
 	{
-		if( variationWeight.length != Variation.ALL_VARIATIONS.size() )
+		if( variationWeights.length != Variation.ALL_VARIATIONS.size() )
 		{
 			throw new IllegalArgumentException(
 				"variationWeight should be of length " + Variation.ALL_VARIATIONS.size() + "."
@@ -32,7 +42,7 @@ public class FlameTransformation implements Transformation
 		}
 		
 		this.affineTransformation = affineTransformation;
-		this.variationWeight = variationWeight.clone();
+		this.variationWeight = variationWeights.clone();
 	}
 
 	/**
@@ -67,6 +77,9 @@ public class FlameTransformation implements Transformation
 		return r;
 	}
 	
+	/**
+	 * Clone this transformation
+	 */
 	@Override
 	public FlameTransformation clone()
 	{

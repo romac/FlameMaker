@@ -38,10 +38,16 @@ public class Arrow extends Line
 			double headX = this.getHead().x();
 	        double headY = this.getHead().y();
 	        
+	        // Compute the angle of the arrow with Ox axis
 			double theta = Math.atan2( headY - this.getTail().y(), headX - this.getTail().x() );
+			
+			// Add the angle of the spike w.r.t to the arrow
 	        double angle = theta + SPIKE_ANGLE;
 	        
-	        double x = headX - 0.1  * Math.cos( angle );  
+	        // Compute the x coordinate of the spike 
+	        double x = headX - 0.1 * Math.cos( angle );
+	        
+	        // Compute the y coordinate of the spike
 	        double y = headY - 0.1 * Math.sin( angle );  
 	        
 	        this.leftSpike = new Point( x, y );
@@ -57,10 +63,16 @@ public class Arrow extends Line
     		double headX = this.getHead().x();
             double headY = this.getHead().y();
             
+            // Compute the angle of the arrow with Ox axis
     		double theta = Math.atan2( headY - this.getTail().y(), headX - this.getTail().x() );
+    		
+    		// Add the angle of the spike w.r.t to the arrow
     		double angle = theta - SPIKE_ANGLE;
             
+    		// Compute the x coordinate of the spike
             double x = headX - 0.1  * Math.cos( angle );  
+            
+            // Compute the y coordinate of the spike
             double y = headY - 0.1 * Math.sin( angle );
             
             this.rightSpike = new Point( x, y );

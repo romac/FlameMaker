@@ -29,15 +29,21 @@ public class FlameMakerGUI
 {
 	
 	private ObservableFlameBuilder builder 	= new ObservableFlameBuilder( new Flame.Builder( null ) );
-	private Color bgColor 			= Color.BLACK;
-	private Palette palette 		= InterpolatedPalette.RGB_PALETTE;
-	private Rectangle frame 		= new Rectangle( new Point( -0.25, 0 ), 5, 4 );
-	private int density 			= 50;
-	private int selectedTransformationIndex = 0;
 	private ArrayList<TransformationSelectionObserver> selectedTransformationObservers = new ArrayList<TransformationSelectionObserver>();
+	private int selectedTransformationIndex = 0;
+	
+	private Color bgColor;
+	private Palette palette;
+	private Rectangle frame;
+	private int density;
 	
 	private void setUp()
 	{
+		this.bgColor = Color.BLACK;
+		this.palette = InterpolatedPalette.RGB_PALETTE;
+		this.frame = new Rectangle( new Point( -0.25, 0 ), 5, 4 );
+		this.density = 50;
+		
 		this.builder.addTransformation( new FlameTransformation(
             new AffineTransformation(
             	-0.4113504, -0.7124804, -0.4,

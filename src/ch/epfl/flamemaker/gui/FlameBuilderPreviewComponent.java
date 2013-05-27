@@ -40,14 +40,9 @@ public class FlameBuilderPreviewComponent extends JComponent implements Observab
 	{
 		Graphics2D g = ( Graphics2D )g0;
 		
-		// System.out.println( "Component: " + this.getWidth() + ", " + this.getHeight() );
-		
 		double aspectRatio = ( double )this.getWidth() / ( double )this.getHeight();
-		// System.out.println( "Component aspect ratio: " + aspectRatio );
 		
-		// System.out.println( "Frame: " + frame );
 		Rectangle expandedFrame = frame.expandToAspectRatio( aspectRatio );
-		// System.out.println( "Expanded frame : " + expandedFrame );
 		
 		BufferedImage image = new BufferedImage( this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB );
 		

@@ -18,6 +18,7 @@ public class InterpolatedPalette implements Palette
 	
 	/**
 	 * Create a new palette, which interpolates between the given colors.
+	 * 
 	 * @param colors A list of colors to interpolate between. 
 	 */
 	public InterpolatedPalette( List<Color> colors )
@@ -44,7 +45,10 @@ public class InterpolatedPalette implements Palette
 			throw new IllegalArgumentException( "index should be between 0 and 1." );
 		}
 		
+		// Get a index between 0.0 and colors.size() - 1
 		double colorIndex = index * ( colors.size() - 1 );
+		
+		// Get the previous color's index
 		double flooredIndex = Math.floor( colorIndex );
 		
 		// Check if colorIndex was already a round number.
@@ -63,11 +67,12 @@ public class InterpolatedPalette implements Palette
 		// the mix than the other.
 		double p = 1 - ( colorIndex - flooredIndex ); 
 		
-		// We get the color at the floored index.
+		// Get the color at the floored index.
 		Color first = colors.get( ( int )flooredIndex );
 		// and the next one (which will always exists, since we've floored the index). 
 		Color second = colors.get( ( int )flooredIndex + 1 );
 		
+		// Mix the two colors together
 		return first.mixWith( second, p );
 	}
 	

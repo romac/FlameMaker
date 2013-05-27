@@ -106,9 +106,9 @@ public class Color
 	
 	
 	/**
-	 * Format this color.
+	 * Format this RGB color as a string.
 	 * 
-	 * @return A string representing this RGB color, with 255 as the max value.
+	 * @return A string representing this RGB color
 	 */
 	@Override
 	public String toString()

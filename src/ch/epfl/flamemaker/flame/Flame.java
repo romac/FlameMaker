@@ -50,16 +50,17 @@ public class Flame
 
 		double[] colorIndexes = Flame.colorIndexes( n );
 		
+		// Compute 20 points that we won't draw, to kick the computation off.
 		for( int j = 0; j < 20; j++ )
 		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
 			c = ( colorIndexes[ i ] + c ) / 2.0;
 		}
+		
+		int numberOfPoints = density * width * height;
 
-		int iterations = density * width * height;
-
-		for( int j = 0; j < iterations; j++ )
+		for( int j = 0; j < numberOfPoints; j++ )
 		{
 			int i = random.nextInt( n );
 			p = this.transformations.get( i ).transformPoint( p );
@@ -72,7 +73,7 @@ public class Flame
 	}
 	
 	/**
-	 * Compute the first n color indexes.
+	 * Compute the color indexes for each transformation, by their index.
 	 * 
 	 * @param n The number of color indexes to compute.
 	 * @return An array of n color indexes.
@@ -88,17 +89,17 @@ public class Flame
 
 		for( int i = 0; i < n; i++ )
 		{
-			// The color index for 0 or 1 is, respectively, 0 or 1.
+			// The color indexes for the first two transformations are, respectively, 0 and 1.
 			if( i <= 1 )
 			{
 				indexes[ i ] = i;
 				
 				continue;
 			}
-
+			
 			double denominator = Math.pow( 2, Math.ceil( Math.log( i ) / Math.log( 2 ) ) );
 			double numerator = 1 + ( 2 * ( i - ( denominator / 2 ) - 1 ) );
-
+			
 			indexes[ i ] = numerator / denominator;
 		}
 		
@@ -113,6 +114,12 @@ public class Flame
 
 		private final List<FlameTransformation.Builder> builders;
 
+		/**
+		 * Create a new builder that will hold the same transformations
+		 * as the flame specified.
+		 * 
+		 * @param flame A flame
+		 */
 		public Builder( Flame flame )
 		{
 			this.builders = new ArrayList<FlameTransformation.Builder>();
@@ -122,22 +129,40 @@ public class Flame
 				return;
 			}
 			
+			// Create a transformation builder for each transformation in the given flame
+			// so we can modify them afterwards.
 			for( FlameTransformation transformation : flame.transformations )
 			{
 				this.builders.add( new FlameTransformation.Builder( transformation ) );
 			}
 		}
 
+		/**
+		 * Return the number of transformations holded by this builder
+		 * 
+		 * @return the number of transformations holded by this builder
+		 */
 		public int transformationCount()
 		{
 			return this.builders.size();
 		}
 
+		/**
+		 * Add a transformation to the builder, wrapped in a FlameTransformation.Builder.
+		 * 
+		 * @param transformation A transformation to add to the builder
+		 */
 		public void addTransformation( FlameTransformation transformation )
 		{
 			this.builders.add( new FlameTransformation.Builder( transformation ) );
 		}
 
+		/**
+		 * Get the affine transformation at the given index.
+		 *  
+		 * @param index The index of the transformation to get
+		 * @return the affine transformation at the given index.
+		 */
 		public AffineTransformation affineTransformation( int index )
 		{
 			if( index < 0 || index >= this.transformationCount() )
@@ -147,7 +172,13 @@ public class Flame
 
 			return this.builders.get( index ).affineTransformation();
 		}
-
+		
+		/**
+		 * Set the affine transformation at the given index.
+		 * 
+		 * @param index
+		 * @param transformation
+		 */
 		public void setAffineTransformation( int index, AffineTransformation transformation )
 		{
 			if( index < 0 || index >= this.transformationCount() )
@@ -157,7 +188,14 @@ public class Flame
 
 			this.builders.get( index ).setAffineTransformation( transformation );
 		}
-
+		
+		/**
+		 * Get the weight of the specified variation of the transformation at the given index.
+		 * 
+		 * @param index The index of the transformation
+		 * @param variation The variation to get the weight from
+		 * @return The weight of the variation
+		 */
 		public double variationWeight( int index, Variation variation )
 		{
 			if( index < 0 || index >= this.transformationCount() )
@@ -167,7 +205,13 @@ public class Flame
 
 			return this.builders.get( index ).variationWeight( variation );
 		}
-
+		
+		/**
+		 * Set the weight of the specified variation of the transformation at the given index.
+		 * @param index
+		 * @param variation
+		 * @param weight
+		 */
 		public void setVariationWeight( int index, Variation variation, double weight )
 		{
 			if( index < 0 || index >= this.transformationCount() )
@@ -178,6 +222,11 @@ public class Flame
 			this.builders.get( index ).setVariationWeight( variation, weight );
 		}
 
+		/**
+		 * Remove the transformation at the given index.
+		 * 
+		 * @param index
+		 */
 		public void removeTransformation( int index )
 		{
 			if( index < 0 || index >= this.transformationCount() )
@@ -188,6 +237,12 @@ public class Flame
 			this.builders.remove( index );
 		}
 		
+		/**
+		 * Build the flame by building all the flame transformations and
+		 * passing them to Flame's constructor.
+		 * 
+		 * @return A new Flame object.
+		 */
 		public Flame build()
 		{
 			List<FlameTransformation> transformations = new ArrayList<FlameTransformation>();

@@ -12,7 +12,12 @@ public class ObservableFlameBuilder
 	
 	private Builder builder;
 	private ArrayList<Observer> observers = new ArrayList<Observer>();
-
+	
+	public ObservableFlameBuilder( Flame.Builder builder )
+	{
+		this.builder = builder;
+	}
+	
 	public void addObserver( Observer observer )
 	{
 		this.observers.add( observer );
@@ -29,11 +34,6 @@ public class ObservableFlameBuilder
 		{
 			observer.flameBuilderChanged();
 		}
-	}
-	
-	public ObservableFlameBuilder( Flame.Builder builder )
-	{
-		this.builder = builder;
 	}
 
 	public int transformationCount()
