@@ -25,11 +25,26 @@ import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 import ch.epfl.flamemaker.geometry2d.Point;
 
+/**
+ * Builds the GUI of the program and wires everything together.
+ */
 public class FlameMakerGUI
 {
 	
+	/**
+	 * The flame builder we'll use to build the fractal.
+	 */
 	private ObservableFlameBuilder builder 	= new ObservableFlameBuilder( new Flame.Builder( null ) );
+	
+	/**
+	 * An list of observers that should be notified when the transformation selection changes.
+	 * @see FlameMakerGUI#selectedTransformationIndex 
+	 */
 	private ArrayList<TransformationSelectionObserver> selectedTransformationObservers = new ArrayList<TransformationSelectionObserver>();
+	
+	/**
+	 * The index of the selected transformation.
+	 */
 	private int selectedTransformationIndex = 0;
 	
 	private Color bgColor;
@@ -37,6 +52,10 @@ public class FlameMakerGUI
 	private Rectangle frame;
 	private int density;
 	
+	/**
+	 * Since we want to display something at startup, we'll initialize
+	 * the program with a Sharkfin fractal with an RGB palette on a black background.
+	 */
 	private void setUp()
 	{
 		this.bgColor = Color.BLACK;
@@ -69,12 +88,16 @@ public class FlameMakerGUI
         ) );
 	}
 	
+	/**
+	 * Start the program
+	 */
 	public void start()
     {
+		// Set the Sharkfin fractal up
 		this.setUp();
 		
 		/**
-		 * Window
+		 * Set a nice look-and-feel that matches OS X's interface.
 		 */
         try
         {
@@ -88,6 +111,9 @@ public class FlameMakerGUI
             }
         } catch( Exception e ) {}
 		
+        /**
+         * The window itself.
+         */
 		JFrame frame = new JFrame( "Flame Maker" );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setMinimumSize( new Dimension( 600, 500 ) );
@@ -97,9 +123,8 @@ public class FlameMakerGUI
 		contentPane.setLayout( new BorderLayout() );
 		
 		/**
-		 * Fractal preview
+		 * The component that'll display the fractal
 		 */
-		
 		FlameBuilderPreviewComponent preview = new FlameBuilderPreviewComponent(
 			this.builder, this.bgColor, this.palette, this.frame, this.density
 		);
@@ -109,9 +134,19 @@ public class FlameMakerGUI
 		fractalPanel.add( preview );
 		
 		/**
-		 * Affine transformations grid
+		 * The component that'll display the transformations on a grid 
 		 */
 		final AffineTransformationsComponent affineTransformationsGrid = new AffineTransformationsComponent( this.builder, this.frame );
+		
+		// Highlight the newly selected transformation when the selection changes.
+		this.addSelectedTransformationObserver( new TransformationSelectionObserver()
+		{
+			@Override
+			public void selectionChanged()
+			{
+				affineTransformationsGrid.setHighlightedTransformationIndex( selectedTransformationIndex );
+			}
+		} );
 		
 		JPanel transformationsPanel = new JPanel();
 		transformationsPanel.setBorder( BorderFactory.createTitledBorder( "Transformations affines" ) );
@@ -123,14 +158,25 @@ public class FlameMakerGUI
 		topPanel.add( fractalPanel );
 		
 		/**
-		 * Transformations list
+		 * The transformations list
 		 */
 		final TransformationsListModel transformModel = new TransformationsListModel();
 		final JList transformList = new JList( transformModel );
 		transformList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 		transformList.setVisibleRowCount( 3 );
-		transformList.setSelectedIndex( 0 );
 		
+		// We the selection changes, set the selected transformation index accordingly
+		// to trigger the update of the grid and the text fields.
+		transformList.addListSelectionListener( new ListSelectionListener()
+		{
+			@Override
+            public void valueChanged( ListSelectionEvent event )
+            {
+	            setSelectedTransformationIndex( ( ( JList )event.getSource() ).getSelectedIndex() );
+            }
+		} );
+		
+		// Make it scrollable.
 		JScrollPane transformListPane = new JScrollPane( transformList );
 		
 		final JButton addTransformationButton = new JButton( "Ajouter" );
@@ -142,14 +188,63 @@ public class FlameMakerGUI
 		
 		JPanel editPanel = new JPanel( new BorderLayout() );
 		editPanel.setBorder( BorderFactory.createTitledBorder( "Transformations " ) );
-		// editPanel.setMaximumSize( new Dimension( 500, 600 ) );
 		editPanel.add( transformListPane, BorderLayout.CENTER );
 		editPanel.add( transformListButtons, BorderLayout.PAGE_END );
 		
-		/*
-		 * Current transformation
-		 */
+		// Add a new transformation to the list when we click ont the Add button
+		addTransformationButton.addActionListener( new ActionListener()
+		{
+			@Override
+            public void actionPerformed( ActionEvent event )
+            {
+				// Add a new transformation to the list model
+				transformModel.addTransformation();
+				
+				// Select the new item just created
+				transformList.setSelectedIndex( transformModel.getSize() - 1 );
+				transformList.ensureIndexIsVisible( transformList.getSelectedIndex() );
+				
+				// Since there's now at least two transformations
+				// we can re-enable the Remove button.
+				removeTransformationButton.setEnabled( true );
+            }
+		} );
+		
+		// Remove the selected transformation from the list when we click ont the Remove button
+		removeTransformationButton.addActionListener( new ActionListener()
+		{
+			@Override
+            public void actionPerformed( ActionEvent event )
+            {
+				int index = transformList.getSelectedIndex();
+				int lastIndex = transformModel.getSize() - 1;
+				
+				// If we're not going to remove the last item, select the next one 
+				if( index < lastIndex )
+				{
+					transformList.setSelectedIndex( index + 1 );
+				}
+				else // or select the previous
+				{
+					transformList.setSelectedIndex( index - 1 );
+				}
+				
+				transformModel.removeTransformation( index );
+				
+				// Disable the Remove button if there's only one transformation left.
+				if( transformModel.getSize() == 1 )
+				{
+					removeTransformationButton.setEnabled( false );
+				}
+            }
+		} );
+		
+		// A formatter that'll be used for most text fields.
 		DecimalFormat decimalFormat = new DecimalFormat( "#0.0#" );
+		
+		/**
+		 * The interface that'll let us modify the currently selected transformation.
+		 */
 		
 		JLabel translationLabel = new JLabel( "Translation" );
 		JFormattedTextField translationField = new JFormattedTextField( decimalFormat );
@@ -163,9 +258,9 @@ public class FlameMakerGUI
 		leftTranslationButton.addActionListener( new TransformationButtonListener( translationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newTranslation(
+				return AffineTransformation.newTranslation(
 					-this.doubleValue(), 0
 				);
 			}
@@ -173,9 +268,9 @@ public class FlameMakerGUI
 		rightTranslationButton.addActionListener( new TransformationButtonListener( translationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newTranslation(
+				return AffineTransformation.newTranslation(
 					this.doubleValue(), 0
 				);
 			}
@@ -183,9 +278,9 @@ public class FlameMakerGUI
 		upTranslationButton.addActionListener( new TransformationButtonListener( translationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newTranslation(
+				return AffineTransformation.newTranslation(
 					0, -this.doubleValue()
 				);
 			}
@@ -193,9 +288,9 @@ public class FlameMakerGUI
 		downTranslationButton.addActionListener( new TransformationButtonListener( translationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newTranslation(
+				return AffineTransformation.newTranslation(
 					0, this.doubleValue()
 				);
 			}
@@ -211,17 +306,17 @@ public class FlameMakerGUI
 		leftRotationButton.addActionListener( new TransformationButtonListener( rotationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newRotation( -Math.toRadians( this.doubleValue() ) );
+				return AffineTransformation.newRotation( -Math.toRadians( this.doubleValue() ) );
 			}
 		} );
 		rightRotationButton.addActionListener( new TransformationButtonListener( rotationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newRotation( Math.toRadians( this.doubleValue() ) );
+				return AffineTransformation.newRotation( Math.toRadians( this.doubleValue() ) );
 			}
 		} );
 		
@@ -238,27 +333,35 @@ public class FlameMakerGUI
 				String currentText = field.getText();
 				AbstractFormatter formatter = field.getFormatter();
 				
+				// Try to get the double value of the current text (which might fail and thus
+				// throw an exception if eg. the user entered text)
 				try
                 {
 	                double currentValue = Double.valueOf( currentText );
 	                
+	                // Since we disallow the value 0,
 	                if( currentValue == 0.0 )
 	                {
+	                	// we'll just throw an exception to jump
+	                	// into the next catch block and restores the previous value.
 	                	throw new Exception( "Invalid value" );
 	                }
                 }
                 catch( Exception e )
                 {
+                	// field.setText() might fail (but it shouldn't in our case).
                 	try
                     {
 	                    field.setText( formatter.valueToString( previousValue ) );
                     }
                     catch( ParseException e1 )
                     {
+                    	// If it really failed, we just set a default value.
 	                    field.setText( "1.05" );
                     }
                 }
 				
+				// Let the field lose focus.
 				return true;
 			}
 		} );
@@ -271,33 +374,33 @@ public class FlameMakerGUI
 		moreHorizontalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newScaling( this.doubleValue(), 1 );
+				return AffineTransformation.newScaling( this.doubleValue(), 1 );
 			}
 		} );
 		lessHorizontalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newScaling( 1 / this.doubleValue(), 1 );
+				return AffineTransformation.newScaling( 1 / this.doubleValue(), 1 );
 			}
 		} );
 		moreVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newScaling( 1, this.doubleValue() );
+				return AffineTransformation.newScaling( 1, this.doubleValue() );
 			}
 		} );
 		lessVerticalDilatationButton.addActionListener( new TransformationButtonListener( dilatationField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newScaling( 1, 1 / this.doubleValue() );
+				return AffineTransformation.newScaling( 1, 1 / this.doubleValue() );
 			}
 		} );
 		
@@ -313,33 +416,33 @@ public class FlameMakerGUI
 		leftTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newShearX( -this.doubleValue() );
+				return AffineTransformation.newShearX( -this.doubleValue() );
 			}
 		} );
 		rightTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newShearX( this.doubleValue() );
+				return AffineTransformation.newShearX( this.doubleValue() );
 			}
 		} );
 		upTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newShearY( this.doubleValue() );
+				return AffineTransformation.newShearY( this.doubleValue() );
 			}
 		} );
 		downTransvectionButton.addActionListener( new TransformationButtonListener( transvectionField )
 		{
 			@Override
-			public void run()
+			public AffineTransformation getTransformation()
 			{
-				this.transformation = AffineTransformation.newShearY( -this.doubleValue() );
+				return AffineTransformation.newShearY( -this.doubleValue() );
 			}
 		} );
 		
@@ -444,6 +547,7 @@ public class FlameMakerGUI
 		JLabel bubbleLabel = new JLabel( "Bubble" );
 		final JFormattedTextField bubbleField = new JFormattedTextField( decimalFormat );
 		
+		// Update all variations weight when the transformation selection changes.
 		this.addSelectedTransformationObserver( new TransformationSelectionObserver()
 		{
 			@Override
@@ -460,6 +564,7 @@ public class FlameMakerGUI
 			}
 		} );
 		
+		// Update the flame transformation everytime a variation weight is modified.
 		linearField.addPropertyChangeListener( "value", new WeightChangeListener( 0 ) );
 		sinusoidalField.addPropertyChangeListener( "value", new WeightChangeListener( 1 ) );
 		sphericalField.addPropertyChangeListener( "value", new WeightChangeListener( 2 ) );
@@ -518,7 +623,11 @@ public class FlameMakerGUI
 		);
 		
 		editWeightsPanel.setLayout( editWeightsLayout );
-
+		
+		/**
+		 * The current transformation
+		 */
+		
 		JPanel editCurrentPanel = new JPanel();
 		editCurrentPanel.setBorder( BorderFactory.createTitledBorder( "Transformation courante" ) );
 		editCurrentPanel.setLayout( new BoxLayout( editCurrentPanel, BoxLayout.PAGE_AXIS ) );
@@ -534,70 +643,16 @@ public class FlameMakerGUI
 		contentPane.add( topPanel, BorderLayout.CENTER );
 		contentPane.add( bottomPanel, BorderLayout.PAGE_END );
 		
+		// Before showing the window, we pre-select the first transformation
+		// to trigger the events and update the text fields values.
+		transformList.setSelectedIndex( 0 );
 		this.setSelectedTransformationIndex( 0 );
+		
+		// Causes the window to be sized to fit the preferred size and layouts of its subcomponents
 		frame.pack();
+		
+		// Show the window
 		frame.setVisible( true );
-		
-		addTransformationButton.addActionListener( new ActionListener()
-		{
-			@Override
-            public void actionPerformed( ActionEvent event )
-            {
-				transformModel.addTransformation();
-				
-				transformList.setSelectedIndex( transformModel.getSize() - 1 );
-				transformList.ensureIndexIsVisible( transformList.getSelectedIndex() );
-				
-				if( transformModel.getSize() > 1 )
-				{
-					removeTransformationButton.setEnabled( true );
-				}
-            }
-		} );
-		
-		removeTransformationButton.addActionListener( new ActionListener()
-		{
-			@Override
-            public void actionPerformed( ActionEvent event )
-            {
-				int index = transformList.getSelectedIndex();
-				int lastIndex = transformModel.getSize() - 1;
-				
-				if( index < lastIndex )
-				{
-					transformList.setSelectedIndex( index + 1 );
-				}
-				else
-				{
-					transformList.setSelectedIndex( index - 1 );
-				}
-				
-				transformModel.removeTransformation( index );
-				
-				if( transformModel.getSize() == 1 )
-				{
-					removeTransformationButton.setEnabled( false );
-				}
-            }
-		} );
-		
-		this.addSelectedTransformationObserver( new TransformationSelectionObserver()
-		{
-			@Override
-			public void selectionChanged()
-			{
-				affineTransformationsGrid.setHighlightedTransformationIndex( selectedTransformationIndex );
-			}
-		} );
-		
-		transformList.addListSelectionListener( new ListSelectionListener()
-		{
-			@Override
-            public void valueChanged( ListSelectionEvent event )
-            {
-	            setSelectedTransformationIndex( ( ( JList )event.getSource() ).getSelectedIndex() );
-            }
-		} );
     }
 	
 	public void removeSelectedTransformationObserver( TransformationSelectionObserver observer )
@@ -667,31 +722,54 @@ public class FlameMakerGUI
 		void selectionChanged();
 	}
 	
-	public abstract class TransformationButtonListener implements ActionListener, Runnable
+	/**
+	 * Listens to click on the buttons in the "Current transformation" panel
+	 * and modify the current transformation accordingly.
+	 * 
+	 * Every specific listener has to implement a getTransformation() method
+	 * that returns an AffineTransformation to compose the current one with.
+	 */
+	public abstract class TransformationButtonListener implements ActionListener
 	{
-		protected JFormattedTextField field;  
-		protected AffineTransformation transformation;
+		/**
+		 * The text field holding the factor to modify the transformation by.
+		 */
+		protected JFormattedTextField field;
 		
 		public TransformationButtonListener( JFormattedTextField field )
 		{
 			this.field = field;
 		}
 		
+		/**
+		 * @return the transformation to compose the current one with.
+		 */
+		protected abstract AffineTransformation getTransformation();
+		
+		/**
+		 * Replace the transformation currently selected by
+		 * a new one composed of itself and a transformation
+		 * that depends on which button has been clicked. 
+		 */
 		@Override
 	    public void actionPerformed( ActionEvent e )
 	    {
 			int index = getSelectedTransformationIndex();
 			AffineTransformation current = builder.affineTransformation( index );
-			this.run();
-			if( this.transformation != null )
+			AffineTransformation transformation = this.getTransformation();
+			
+			if( transformation != null )
 			{
 				builder.setAffineTransformation(
 					index,
-					this.transformation.composeWith( current )
+					transformation.composeWith( current )
 				);
 			}
 	    }
 		
+		/**
+		 * @return The associated text field's value as a Double.
+		 */
 		protected double doubleValue()
 		{
 			return Double.valueOf( this.field.getValue().toString() );
@@ -699,6 +777,12 @@ public class FlameMakerGUI
 
 	}
 	
+	/**
+	 * This class tells the builder to updates a Variation's weight when the user modify
+	 * the matching text field. It implements the Strategy design pattern to avoid
+	 * to uselessly duplicate a lot of code when only the variation index varies amongst
+	 * the different listeners.
+	 */
 	public class WeightChangeListener implements PropertyChangeListener
 	{
 		private int variationIndex;
