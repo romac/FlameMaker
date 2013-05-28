@@ -116,7 +116,7 @@ public class AffineTransformationsComponent extends JComponent implements Observ
      */
     private void drawGrid()
     {
-    	this.g.setColor( new java.awt.Color( 0.85f, 0.85f, 0.85f ) );
+    	this.g.setColor( new java.awt.Color( 0.80f, 0.80f, 0.80f ) );
 		
     	// Draw each vertical line every 1 unit.
 		for( double i = 1.0; i < expandedFrame.width() + 1; i += 1.0 )

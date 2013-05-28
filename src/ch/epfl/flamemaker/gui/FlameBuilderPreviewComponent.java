@@ -24,6 +24,7 @@ public class FlameBuilderPreviewComponent extends JComponent implements Observer
 {
 
 	private static final long serialVersionUID = 4246053641524095098L;
+	
 	private ObservableFlameBuilder builder;
 	private Color bgColor;
 	private Palette palette;

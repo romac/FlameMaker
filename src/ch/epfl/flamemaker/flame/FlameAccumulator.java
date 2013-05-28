@@ -20,17 +20,17 @@ public final class FlameAccumulator
 	/**
 	 * A 2-dimensional array holding the hit count for each point.
 	 */
-	private int[][] hitCount;
+	private final int[][] hitCount;
 	
 	/**
 	 * A 2-dimensional array holding the color index for each point.
 	 */
-	private double[][] colorIndexSum;
+	private final double[][] colorIndexSum;
 	
 	/**
 	 * The intensity denominator.
 	 */
-	private double intensityDenominator;
+	private final double intensityDenominator;
 
 	/**
 	 * Create a new accumulator.

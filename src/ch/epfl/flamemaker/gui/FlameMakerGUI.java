@@ -655,16 +655,37 @@ public class FlameMakerGUI
 		frame.setVisible( true );
     }
 	
+	/**
+	 * Remove an observer that was observing the selected transformation selection.
+	 * 
+	 * @param observer The observer to remove
+	 */
 	public void removeSelectedTransformationObserver( TransformationSelectionObserver observer )
     {
 	    this.selectedTransformationObservers.remove( observer );
     }
 
+	/**
+	 * Add an observer which will be notified when the selection changes.
+	 *  
+	 * @param observer
+	 */
 	public void addSelectedTransformationObserver( TransformationSelectionObserver observer )
     {
 		this.selectedTransformationObservers.add( observer );
     }
+
+	/**
+	 * Get the currently selected transformation's index.
+	 */
+	public int getSelectedTransformationIndex()
+    {
+	    return selectedTransformationIndex;
+    }
 	
+	/**
+	 * Notify the observer that the selection changed.
+	 */
 	private void fireSelectedTransformationChanged()
 	{
 		for( TransformationSelectionObserver observer : this.selectedTransformationObservers )
@@ -673,17 +694,23 @@ public class FlameMakerGUI
 		}
 	}
 
-	public int getSelectedTransformationIndex()
-    {
-	    return selectedTransformationIndex;
-    }
-
+	/**
+	 * Set the currently selected transformation's by its index, and notify the watchers
+	 * of the change.
+	 * 
+	 * @param selectedTransformationIndex
+	 */
 	public void setSelectedTransformationIndex( int selectedTransformationIndex )
     {
 	    this.selectedTransformationIndex = selectedTransformationIndex;
 	    this.fireSelectedTransformationChanged();
     }
 
+	/**
+	 * The model for the transformations JList.
+	 * This class allow us to add and remove transformations from
+	 * the list and takes care of returning a label for each transformation.
+	 */
 	protected class TransformationsListModel extends AbstractListModel
 	{
 
@@ -717,7 +744,12 @@ public class FlameMakerGUI
 		
 	}
 	
-	public interface TransformationSelectionObserver
+	/**
+	 * Observers that want to be notified when the selection changes
+	 * must implement this interface, and register themselves
+	 * with {@link FlameMakerGUI#addSelectedTransformationObserver(TransformationSelectionObserver)}
+	 */
+	public static interface TransformationSelectionObserver
 	{
 		void selectionChanged();
 	}
