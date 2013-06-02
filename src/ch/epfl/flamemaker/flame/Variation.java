@@ -8,6 +8,9 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
 
 /**
  * A variation is a commonly used, named, and indexed {@link Transformation}.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public abstract class Variation implements Transformation
 {
@@ -81,20 +84,39 @@ public abstract class Variation implements Transformation
 		}
 	);
 	
+	/**
+	 * The name of the variation
+	 */
 	private final String name;
+	
+	/**
+	 * The index of the variation
+	 */
 	private final int index;
 
+	/**
+	 * Create a new variation with the given index and name
+	 * 
+	 * @param index An index
+	 * @param name A name
+	 */
 	private Variation( int index, String name )
 	{
 		this.name = name;
 		this.index = index;
 	}
 	
+	/**
+	 * @return the name of this variation 
+	 */
 	public String name()
 	{
 		return this.name;
 	}
 	
+	/**
+	 * @return the index of this variation
+	 */
 	public int index()
 	{
 		return this.index;

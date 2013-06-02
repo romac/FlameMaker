@@ -13,6 +13,9 @@ import ch.epfl.flamemaker.util.Arrays2D;
  * 
  * Such an accumulator must be built progressively
  * using the {@link FlameAccumulator.Builder} class. 
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public final class FlameAccumulator
 {

@@ -2,6 +2,9 @@ package ch.epfl.flamemaker.geometry2d;
 
 /**
  * Represents a transformation to apply on a point.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public interface Transformation
 {

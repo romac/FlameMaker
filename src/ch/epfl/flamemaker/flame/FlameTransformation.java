@@ -6,7 +6,11 @@ import ch.epfl.flamemaker.geometry2d.Transformation;
 
 /**
  * A flame transformation, which is actually a weighted application of
- * {@link Variation}, each composed with the given {@link ch.epfl.flamemaker.geometry2d.AffineTransformation}.
+ * {@link Variation}, each composed with the given
+ * {@link ch.epfl.flamemaker.geometry2d.AffineTransformation}.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class FlameTransformation implements Transformation
 {
@@ -92,33 +96,63 @@ public class FlameTransformation implements Transformation
 	public static class Builder
 	{
 		
+		/**
+		 * The Flame transformation we'll use as a basis.
+		 */
 		private FlameTransformation transformation;
 		
 		public Builder( FlameTransformation transformation )
 		{
+			if( transformation == null )
+			{
+				throw new IllegalArgumentException( "transformation must not be null" );
+			}
+			
 			this.transformation = ( FlameTransformation )transformation.clone();
 		}
 		
+		/**
+		 * @return the flame transformation's affine transformation.
+		 */
 		public AffineTransformation affineTransformation()
 		{
 			return this.transformation.affineTransformation;
 		}
 
+		/**
+		 * Set the affine transformation of the Flame transformation
+		 * @param affineTransformation
+		 */
 		public void setAffineTransformation( AffineTransformation affineTransformation )
 		{
 			this.transformation.affineTransformation = affineTransformation.clone();
 		}
 
+		/**
+		 * Get the weight of the specified variation
+		 * @param variation
+		 * @return
+		 */
 		public double variationWeight( Variation variation )
 		{
 			return this.transformation.variationWeight[ variation.index() ];
 		}
 
+		/**
+		 * Set the weight of the specified variation
+		 * @param variation
+		 * @param weight
+		 */
 		public void setVariationWeight( Variation variation, double weight )
 		{
 			this.transformation.variationWeight[ variation.index() ] = weight;
 		}
 		
+		/**
+		 * Build the transformation
+		 * 
+		 * @return the Flame transformation just built
+		 */
 		public FlameTransformation build()
 		{
 			return this.transformation;

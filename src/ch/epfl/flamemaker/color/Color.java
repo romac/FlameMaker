@@ -4,6 +4,9 @@ import java.util.Random;
 
 /**
  * Represents a RGB color.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class Color
 {

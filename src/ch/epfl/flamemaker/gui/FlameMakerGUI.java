@@ -27,6 +27,9 @@ import ch.epfl.flamemaker.geometry2d.Point;
 
 /**
  * Builds the GUI of the program and wires everything together.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class FlameMakerGUI
 {
@@ -565,12 +568,12 @@ public class FlameMakerGUI
 		} );
 		
 		// Update the flame transformation everytime a variation weight is modified.
-		linearField.addPropertyChangeListener( "value", new WeightChangeListener( 0 ) );
-		sinusoidalField.addPropertyChangeListener( "value", new WeightChangeListener( 1 ) );
-		sphericalField.addPropertyChangeListener( "value", new WeightChangeListener( 2 ) );
-		swirlField.addPropertyChangeListener( "value", new WeightChangeListener( 3 ) );
-		horseshoeField.addPropertyChangeListener( "value", new WeightChangeListener( 4 ) );
-		bubbleField.addPropertyChangeListener( "value", new WeightChangeListener( 5 ) );
+		linearField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 0 ) );
+		sinusoidalField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 1 ) );
+		sphericalField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 2 ) );
+		swirlField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 3 ) );
+		horseshoeField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 4 ) );
+		bubbleField.addPropertyChangeListener( "value", new VariationWeightChangeListener( 5 ) );
 		
 		editWeightsLayout.setHorizontalGroup(
 			editWeightsLayout.createSequentialGroup()
@@ -713,9 +716,11 @@ public class FlameMakerGUI
 	 */
 	protected class TransformationsListModel extends AbstractListModel
 	{
-
 		private static final long serialVersionUID = -8579595948096049981L;
 		
+		/**
+		 * Add a transformation to the list and the builder.
+		 */
 		void addTransformation()
 		{
 			builder.addTransformation( FlameTransformation.IDENTITY() );
@@ -724,18 +729,29 @@ public class FlameMakerGUI
 			this.fireIntervalAdded( this, lastIndex, lastIndex );
 		}
 		
+		/**
+		 * Remove a transformation from the list and the builder.
+		 * 
+		 * @param index The index of the transformation to remove.
+		 */
 		void removeTransformation( int index )
 		{
 			builder.removeTransformation( index );
 			this.fireIntervalRemoved( this, index, index );
 		}
 		
+		/**
+		 * @see javax.swing.ListModel#getElementAt(int)
+		 */
 		@Override
         public String getElementAt( int index )
         {
 	        return "Transformation n°" + ( index + 1 );
         }
-
+		
+		/**
+		 * @see javax.swing.ListModel#getSize()
+		 */
 		@Override
         public int getSize()
         {
@@ -751,6 +767,9 @@ public class FlameMakerGUI
 	 */
 	public static interface TransformationSelectionObserver
 	{
+		/**
+		 * Gets called when the transformation selection changes.
+		 */
 		void selectionChanged();
 	}
 	
@@ -804,7 +823,7 @@ public class FlameMakerGUI
 		 */
 		protected double doubleValue()
 		{
-			return Double.valueOf( this.field.getValue().toString() );
+			return ( ( Number )this.field.getValue() ).doubleValue();
 		}
 
 	}
@@ -815,19 +834,33 @@ public class FlameMakerGUI
 	 * to uselessly duplicate a lot of code when only the variation index varies amongst
 	 * the different listeners.
 	 */
-	public class WeightChangeListener implements PropertyChangeListener
+	public class VariationWeightChangeListener implements PropertyChangeListener
 	{
+		/**
+		 * The index of the variation to update.
+		 */
 		private int variationIndex;
 		
-		public WeightChangeListener( int variationIndex )
+		/**
+		 * Create a new variation weight listener that
+		 * will update the variation specified by its index.
+		 * 
+		 * @param variationIndex The index of the variation to udpate.
+		 */
+		public VariationWeightChangeListener( int variationIndex )
 		{
 			this.variationIndex = variationIndex;
 		}
 		
+		/**
+		 * Update the variation weight when the property it listens to changes.
+		 * 
+		 * @param e The event holding the new value
+		 */
 		@Override
         public void propertyChange( PropertyChangeEvent e )
         {
-			double value = Double.valueOf( e.getNewValue().toString() );
+			double value = ( ( Number )( e.getNewValue() ) ).doubleValue();
 			builder.setVariationWeight(
 				getSelectedTransformationIndex(),
 				Variation.ALL_VARIATIONS.get( this.variationIndex ),

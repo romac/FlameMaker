@@ -4,6 +4,12 @@ import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 import ch.epfl.flamemaker.geometry2d.Point;
 import ch.epfl.flamemaker.geometry2d.Rectangle;
 
+/**
+ * Build an {@link IFSAccumulator}.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
+ */
 public class IFSAccumulatorBuilder
 {
 

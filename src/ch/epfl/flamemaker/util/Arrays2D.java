@@ -3,8 +3,9 @@ package ch.epfl.flamemaker.util;
 /**
  * Holds a few useful methods for copying 2D arrays
  * as well as finding the max value of a 2D array.
- * @author romac
- *
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class Arrays2D
 {

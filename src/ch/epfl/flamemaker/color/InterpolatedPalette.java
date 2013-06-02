@@ -5,14 +5,23 @@ import java.util.List;
 
 /**
  * Represents a color palette that interpolates between 2 or more colors.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class InterpolatedPalette implements Palette
 {
 	
+	/**
+	 * The standard RGB palette.
+	 */
 	public static InterpolatedPalette RGB_PALETTE = new InterpolatedPalette(
 		Arrays.asList( Color.RED, Color.GREEN, Color.BLUE )
 	);
 	
+	/**
+	 * The colors this palette interpolates between.
+	 */
 	private List<Color> colors;
 	
 	

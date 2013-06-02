@@ -7,6 +7,9 @@ import ch.epfl.flamemaker.ifs.IFSAccumulator;
 
 /**
  * Dump an IFS accumulator into a PBM file.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class PBMWriter
 {

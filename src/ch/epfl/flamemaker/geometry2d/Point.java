@@ -2,6 +2,9 @@ package ch.epfl.flamemaker.geometry2d;
 
 /**
  * Represent a point in a 2D coordinates system.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class Point
 {

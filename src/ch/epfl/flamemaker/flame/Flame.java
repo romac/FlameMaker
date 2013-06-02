@@ -11,6 +11,9 @@ import ch.epfl.flamemaker.geometry2d.Rectangle;
 /**
  * Compute a Flame fractal, defined by a list of Flame transformations,
  * in the given frame.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class Flame
 {

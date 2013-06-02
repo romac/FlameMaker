@@ -3,6 +3,9 @@ package ch.epfl.flamemaker.geometry2d;
 /**
  * Represents a rectangle in a 2D coordinates system.
  * A rectangle is defined by its center, and its size.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class Rectangle
 {

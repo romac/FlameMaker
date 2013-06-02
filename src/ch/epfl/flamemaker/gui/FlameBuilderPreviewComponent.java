@@ -19,6 +19,9 @@ import ch.epfl.flamemaker.geometry2d.Rectangle;
 /**
  * A component that displays the fractal that is being built by the given Builder
  * and updates everytime the builder modifies the fractal.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class FlameBuilderPreviewComponent extends JComponent implements Observer 
 {

@@ -14,6 +14,9 @@ package ch.epfl.flamemaker.geometry2d;
  * 					| a  b  c |   | p.x |
  * 					| a  b  c | * | p.y |
  * 					| a  b  c |   |  1  |
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class AffineTransformation implements Transformation
 {
@@ -29,9 +32,26 @@ public class AffineTransformation implements Transformation
 		);
 	}
 	
+	/**
+	 * The first 6 components of the matrix
+	 */
 	private double a, b, c,
 				   d, e, f;
 	
+	/**
+	 * Create a new affine transformation by it first 6 components.
+     * 
+     * | a  b  c |
+	 * | d  e  f |
+ 	 * | 0  0  1 |
+ 	 * 
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @param d
+	 * @param e
+	 * @param f
+	 */
 	public AffineTransformation( double a, double b, double c,
 								 double d, double e, double f )
 	{
@@ -132,6 +152,12 @@ public class AffineTransformation implements Transformation
 		);
 	}
 	
+	/**
+	 * Create a horizontal transvection
+	 * 
+	 * @param sx
+	 * @return
+	 */
 	public static AffineTransformation newShearX( double sx )
 	{
 		return new AffineTransformation(
@@ -140,6 +166,12 @@ public class AffineTransformation implements Transformation
 		);
 	}
 	
+	/**
+	 * Create a vetical transvection.
+	 * 
+	 * @param sy
+	 * @return
+	 */
 	public static AffineTransformation newShearY( double sy )
 	{
 		return new AffineTransformation(

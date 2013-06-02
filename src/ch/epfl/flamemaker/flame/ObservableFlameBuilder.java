@@ -7,6 +7,9 @@ import ch.epfl.flamemaker.geometry2d.AffineTransformation;
 
 /**
  * A decorator for {@link Flame.Builder} that is makes it {@link Observable}.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class ObservableFlameBuilder extends Observable
 {

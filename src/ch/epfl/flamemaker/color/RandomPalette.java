@@ -5,6 +5,9 @@ import java.util.ArrayList;
 /**
  * Represents a color palette that interpolates between
  * a given number of random colors. 
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class RandomPalette implements Palette
 {

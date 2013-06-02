@@ -21,11 +21,15 @@ import ch.epfl.flamemaker.geometry2d.Rectangle;
  * A component that displays the {@link ch.epfl.flamemaker.geometry2d.AffineTransformation}s of the current flame
  * being built by the {@link ch.epfl.flamemaker.flame.Flame.Builder} on a grid,
  * and highlights the transformation currently selected.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class AffineTransformationsComponent extends JComponent implements Observer
 {
-
-    private static final long serialVersionUID = -4507224814162575365L;
+	
+	private static final long serialVersionUID = -4873806926099007646L;
+	
 	private ObservableFlameBuilder builder;
 	private Rectangle frame;
 	private int highlightedTransformationIndex = 0;

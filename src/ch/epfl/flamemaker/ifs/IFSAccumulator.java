@@ -1,10 +1,15 @@
 package ch.epfl.flamemaker.ifs;
 import ch.epfl.flamemaker.util.Arrays2D;
 
+/**
+ * A points accumulator for an IFS fractal.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
+ */
 public class IFSAccumulator
 {
 	
-	// TODO: Rename to isHit?
 	private boolean[][] hitMap;
 	private int width;
 	private int height;
@@ -13,7 +18,6 @@ public class IFSAccumulator
 	{
 		this.hitMap = Arrays2D.copyOf2DArray( hitMap );
 		
-		// TODO: Delete?
 		this.width = this.hitMap.length; 
 		this.height = this.hitMap[ 0 ].length;
 	}

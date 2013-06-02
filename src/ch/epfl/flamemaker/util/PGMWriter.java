@@ -7,6 +7,9 @@ import ch.epfl.flamemaker.flame.FlameAccumulator;
 
 /**
  * Dump a Flame accumulator into a PGM file.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
  */
 public class PGMWriter
 {

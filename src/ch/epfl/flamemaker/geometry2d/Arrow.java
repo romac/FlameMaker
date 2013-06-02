@@ -1,23 +1,47 @@
 package ch.epfl.flamemaker.geometry2d;
 
+/**
+ * Represents a 2D arrow.
+ * 
+ * @author Romain Ruetschi #218357
+ * @author Arthur Passuello #229261
+ */
 public class Arrow extends Line
 {
 	
+	/**
+	 * The angle between the spikes and the body of the arrow.
+	 */
 	private static double SPIKE_ANGLE = Math.toRadians( 45 );
 	
 	private Point leftSpike;
 	private Point rightSpike;
 	
+	/**
+	 * Create a new arrow from one point to another.
+	 * 
+	 * @param tail
+	 * @param head
+	 */
 	public Arrow( Point tail, Point head )
 	{
 		super( tail, head );
 	}
 	
+	/**
+	 * Create a new arrow on the given line.
+	 * @param line
+	 */
 	public Arrow( Line line )
 	{
 		this( line.getTail(), line.getHead() );
 	}
 	
+	/**
+	 * Return a new arrow, transformed by the given transformation.
+	 * 
+	 * @param transformation the transformation to apply to this arrow
+	 */
 	public Arrow transform( AffineTransformation transformation )
 	{
 		return new Arrow(
@@ -25,12 +49,18 @@ public class Arrow extends Line
 		);
 	}
 	
+	/**
+	 * Set the head of this arrow.
+	 */
 	@Override
 	public void setHead( Point head )
 	{
 		super.setHead( head );
 	}
-
+	
+	/**
+	 * @return The point where the left spike ends.
+	 */
 	public Point getLeftSpike()
     {
 		if( this.leftSpike == null )
@@ -56,6 +86,9 @@ public class Arrow extends Line
 		return this.leftSpike;
     }
 
+	/**
+	 * @return The point where the right spike ends.
+	 */
 	public Point getRightSpike()
     {
 		if( this.rightSpike == null )
