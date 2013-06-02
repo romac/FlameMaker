@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.util.Observable;
 import java.util.Observer;
@@ -75,9 +76,15 @@ public class AffineTransformationsComponent extends JComponent implements Observ
 		AffineTransformation translation = AffineTransformation.newTranslation( -expandedFrame.left() - 0.22, -expandedFrame.bottom() );
 		this.transform = scaling.composeWith( translation );
 		
+		// Flip the graphic buffer vertically, since its y-coordinates go the
+		// opposite way than the "mathematical plan" we're using.
+		AffineTransform tx = AffineTransform.getScaleInstance( 1, -1 );
+	    tx.translate( 0, -this.getHeight() - 30 );
+	    g.setTransform( tx );
+		
 		// Draw the underlying grid first.
 		this.drawGrid();
-		
+	    
 		// Draw each transformation
 		for( int i = 0; i < this.builder.transformationCount(); i++ )
 		{
@@ -104,7 +111,7 @@ public class AffineTransformationsComponent extends JComponent implements Observ
      */
     private void drawTransformation( AffineTransformation transformation, boolean highlight )
     {
-    	// Create the two intersecting arrows centerd at origin.
+    	// Create the two intersecting arrows centered at origin.
     	Arrow a1 = new Arrow( new Point( -1, 0 ), new Point( 1, 0 ) );
     	Arrow a2 = new Arrow( new Point( 0, -1 ), new Point( 0, 1 ) );
     	
@@ -120,27 +127,32 @@ public class AffineTransformationsComponent extends JComponent implements Observ
      */
     private void drawGrid()
     {
+    	double halfHeight = expandedFrame.height() / 2;
+    	double halfWidth  = expandedFrame.width() / 2;
+    	
+    	// A bit darker than suggested in the project's guidelines,
+    	// because my screen's Gamma levels are f***ed up.
     	this.g.setColor( new java.awt.Color( 0.80f, 0.80f, 0.80f ) );
 		
     	// Draw each vertical line every 1 unit.
 		for( double i = 1.0; i < expandedFrame.width() + 1; i += 1.0 )
 		{
-			this.drawLine( i, -expandedFrame.height() / 2, i, expandedFrame.height() / 2 );
-			this.drawLine( -i, -expandedFrame.height() / 2, -i, expandedFrame.height() / 2 );
+			this.drawLine( i, -halfHeight, i, halfHeight );
+			this.drawLine( -i, -halfHeight, -i, halfHeight );
 		}
 		
 		// Draw each horizontal line every 1 unit.
-		for( double i = 1.0; i < expandedFrame.height(); i += 1.0 )
+		for( double i = 1.0; i < expandedFrame.height() + 1; i += 1.0 )
 		{
-			this.drawLine( -expandedFrame.width() / 2, i, expandedFrame.width() / 2, i );
-			this.drawLine( -expandedFrame.width() / 2, -i, expandedFrame.width() / 2, -i );
+			this.drawLine( -halfWidth, i, halfWidth, i );
+			this.drawLine( -halfWidth, -i, halfWidth, -i );
 		}
 		
 		// Draw the center axis a bit bolder.
 		this.g.setColor( java.awt.Color.WHITE );
 		this.g.setStroke( new BasicStroke( 2 ) );
-		this.drawLine( 0, -expandedFrame.height() / 2, 0, expandedFrame.height() / 2 );
-		this.drawLine( -expandedFrame.width() / 2, 0, expandedFrame.width() / 2, 0 );
+		this.drawLine( 0, -halfHeight, 0, halfHeight );
+		this.drawLine( -halfWidth, 0, halfWidth, 0 );
     }
     
     /**
